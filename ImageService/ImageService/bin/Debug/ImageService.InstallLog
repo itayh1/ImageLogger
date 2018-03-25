@@ -1,0 +1,21 @@
+﻿Installing assembly 'C:\Users\Itay\Documents\Visual Studio 2017\repos\ImageService\ImageService\bin\Debug\ImageService.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Users\Itay\Documents\Visual Studio 2017\repos\ImageService\ImageService\bin\Debug\ImageService.InstallLog
+   assemblypath = C:\Users\Itay\Documents\Visual Studio 2017\repos\ImageService\ImageService\bin\Debug\ImageService.exe
+Installing service MyNewService...
+Service MyNewService has been successfully installed.
+Creating EventLog source MyNewService in log Application...
+Committing assembly 'C:\Users\Itay\Documents\Visual Studio 2017\repos\ImageService\ImageService\bin\Debug\ImageService.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Users\Itay\Documents\Visual Studio 2017\repos\ImageService\ImageService\bin\Debug\ImageService.InstallLog
+   assemblypath = C:\Users\Itay\Documents\Visual Studio 2017\repos\ImageService\ImageService\bin\Debug\ImageService.exe
+Uninstalling assembly 'C:\Users\Itay\Documents\Visual Studio 2017\repos\ImageService\ImageService\bin\Debug\ImageService.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Users\Itay\Documents\Visual Studio 2017\repos\ImageService\ImageService\bin\Debug\ImageService.InstallLog
+   assemblypath = C:\Users\Itay\Documents\Visual Studio 2017\repos\ImageService\ImageService\bin\Debug\ImageService.exe
+Removing EventLog source MyNewService.
+Service MyNewService is being removed from the system...
+Service MyNewService was successfully removed from the system.
