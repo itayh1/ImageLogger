@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.ServiceProcess;
 using System.Runtime.InteropServices;
-//using System.Timers;
+using System.Configuration;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -41,13 +41,21 @@ namespace ImageService
         [DllImport("advapi32.dll", SetLastError = true)]
         private static extern bool SetServiceStatus(IntPtr handle, ref ServiceStatus serviceStatus);
         private int eventId = 1;
+        private Server.ImageServer m_imageServer;          // The Image Server
+        private Modal.IImageServiceModal modal;
+        private Controller.IImageController controller;
+        private ILoggingService logging;
 
+        //load app.config here
         public MyNewService(string[] args)
         {
             InitializeComponent();
 
-            string eventSourceName = "MySource";
-            string logName = "MyNewLog";
+            string paths = ConfigurationManager.AppSettings["Handler"];
+            string targetPath = ConfigurationManager.AppSettings["OutputDir"];
+            string eventSourceName = ConfigurationManager.AppSettings["SourceName"];//"MySource";
+            string logName = ConfigurationManager.AppSettings["LogName"];  //"MyNewLog";
+            int thumbnail = int.Parse(ConfigurationManager.AppSettings["ThumbnailSize"]);
             if (args.Count() > 0)
             {
                 eventSourceName = args[0];
@@ -63,6 +71,17 @@ namespace ImageService
             }
             eventLog1.Source = eventSourceName;
             eventLog1.Log = logName;
+
+            this.modal = new Modal.ImageServiceModal(targetPath, thumbnail);
+            this.controller = new Controller.ImageController(this.modal);
+            this.logging = new LoggingService();
+            this.logging.MessageRecieved += updateLog;
+            this.m_imageServer = new Server.ImageServer(this.controller, this.logging);
+        }
+
+        private void updateLog(object sender, Logging.Modal.MessageRecievedEventArgs e)
+        {
+            this.eventLog1.WriteEntry(e.Message.ToString());
         }
 
         protected override void OnStart(string[] args)
