@@ -24,7 +24,7 @@ namespace ImageService.Modal
         public string AddFile(string path, out bool result)
         {
             // string fileName = "test.txt";
-            string year, month, dstPath;
+            string year, month, dstPath, t_path;
 
             try
             {
@@ -39,7 +39,7 @@ namespace ImageService.Modal
                 // check if directory exist
 
                 Directory.CreateDirectory(outputFolder);
-                Directory.CreateDirectory(outputFolder + "\\" + "Thubnails");
+                Directory.CreateDirectory(outputFolder + "\\" + "Thumbnails");
 
                 // create year folder
                 
@@ -48,7 +48,9 @@ namespace ImageService.Modal
 
                 Image image  = Image.FromFile(path);
                 Image thumb = image.GetThumbnailImage(this.thumbSize, this.thumbSize, () => false, IntPtr.Zero);
-                thumb.Save(this.outputFolder + "\\Thumbnails" + "\\" + year + "\\" + month + "\\" + Path.GetFileName(path));//Path.ChangeExtension(path, "thumb"));
+                t_path = this.outputFolder + "\\Thumbnails" + "\\" + year + "\\" + month + "\\" + Path.GetFileName(path);
+                thumb.Save(t_path);
+                Path.ChangeExtension(t_path, ".thumbnail");
                 result = true;
                 return Path.GetFileName(path) + "added successfuly";
                 

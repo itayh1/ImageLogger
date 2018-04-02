@@ -92,7 +92,7 @@ namespace ImageService
             serviceStatus.dwWaitHint = 100000;
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
 
-            eventLog1.WriteEntry("In OnStart");
+            this.eventLog1.WriteEntry("In OnStart");
             // Set up a timer to trigger every minute.  
             System.Timers.Timer timer = new System.Timers.Timer();
             timer.Interval = 60000; // 60 seconds  
@@ -106,7 +106,9 @@ namespace ImageService
 
         protected override void OnStop()
         {
-            eventLog1.WriteEntry("In onStop.");
+            this.eventLog1.WriteEntry("In onStop.");
+            this.m_imageServer.OnCloseServer();
+            this.eventLog1.WriteEntry("stop service.");
         }
 
         protected override void OnContinue()
@@ -114,20 +116,10 @@ namespace ImageService
             eventLog1.WriteEntry("In OnContinue.");
         }
 
-        private void eventLog1_EntryWritten(object sender, EntryWrittenEventArgs e)
-        {
-
-        }
-
         public void OnTimer(object sender, System.Timers.ElapsedEventArgs args)
         {
-            // TODO: Insert monitoring activities here.  
             eventLog1.WriteEntry("Monitoring the System", EventLogEntryType.Information, eventId++);
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-
-        }
     }
 }
