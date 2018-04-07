@@ -57,19 +57,20 @@
     <Compile Include="Controller\Handlers\IDirectoryHandler.cs" />
     <Compile Include="Controller\IImageController.cs" />
     <Compile Include="Controller\ImageController.cs" />
-    <Compile Include="ILoggingService.cs" />
-    <Compile Include="LoggingModal\MessageRecievedEventArgs.cs" />
-    <Compile Include="LoggingModal\MessageTypeEnum.cs" />
-    <Compile Include="LoggingService.cs" />
+    <Compile Include="Logger\ILoggingService.cs" />
+    <Compile Include="Infrastructure\Enums\CommandEnum.cs" />
+    <Compile Include="Logger\LoggingModal\MessageRecievedEventArgs.cs" />
+    <Compile Include="Logger\LoggingModal\MessageTypeEnum.cs" />
+    <Compile Include="Logger\LoggingService.cs" />
     <Compile Include="Modal\Event\CommandRecievedEventArgs.cs" />
     <Compile Include="Modal\Event\DirectoryCloseEventArgs.cs" />
     <Compile Include="Modal\IImageServiceModal.cs" />
     <Compile Include="Modal\ImageServiceModal.cs" />
-    <Compile Include="MyNewService.cs">
+    <Compile Include="ImageService.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="MyNewService.Designer.cs">
-      <DependentUpon>MyNewService.cs</DependentUpon>
+    <Compile Include="ImageService.Designer.cs">
+      <DependentUpon>ImageService.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="ProjectInstaller.cs">
@@ -85,8 +86,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="MyNewService.resx">
-      <DependentUpon>MyNewService.cs</DependentUpon>
+    <EmbeddedResource Include="ImageService.resx">
+      <DependentUpon>ImageService.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProjectInstaller.resx">
       <DependentUpon>ProjectInstaller.cs</DependentUpon>

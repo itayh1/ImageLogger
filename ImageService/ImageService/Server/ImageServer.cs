@@ -1,6 +1,5 @@
 ﻿using ImageService.Controller;
 using ImageService.Controller.Handlers;
-using ImageService.Infrastructure.Enums;
 using ImageService.Logging;
 using ImageService.Modal;
 using System;
@@ -29,7 +28,7 @@ namespace ImageService.Server
             this.m_controller = iic;
             this.m_logging = ils;
 
-            string[] dirs = ConfigurationManager.AppSettings["Handler"].Split(";");
+            string[] dirs = ConfigurationManager.AppSettings["Handler"].Split(';');
 
             foreach (string s in dirs) {
                 try 
@@ -55,7 +54,7 @@ namespace ImageService.Server
                 this.m_logging.Log("Server closed", Logging.Modal.MessageTypeEnum.INFO);
             }
             catch(Exception e){
-                this.m_logging.Log("Failed closing the server " + e.Message.ToString, Logging.Modal.MessageTypeEnum.FAIL);
+                this.m_logging.Log("Failed closing the server " + e.Message.ToString(), Logging.Modal.MessageTypeEnum.FAIL);
             }
         }   
     }

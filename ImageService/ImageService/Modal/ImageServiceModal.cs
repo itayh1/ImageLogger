@@ -21,38 +21,38 @@ namespace ImageService.Modal
             this.outputFolder = target;
             this.thumbSize = thumbnail;
         }
-        public string AddFile(string path, out bool result)
+        public string AddFile(string src, out bool result)
         {
-            // string fileName = "test.txt";
-            string year, month, dstPath, t_path;
+            string year, month, dstPath, t_src, message = String.Empty;
 
             try
             {
-                if (!File.Exists(path))
+                if (!File.Exists(src))
                 {
                     throw new Exception("File missing!");
                 }
-                DateTime dateTime = File.GetCreationTime(path);
+                DateTime dateTime = File.GetCreationTime(src);
                 year = dateTime.Year.ToString();
                 month = dateTime.Month.ToString();
-
-                // check if directory exist
-
-                Directory.CreateDirectory(outputFolder);
-                Directory.CreateDirectory(outputFolder + "\\" + "Thumbnails");
-
-                // create year folder
+                dstPath = Path.Combine(this.outputFolder, year, month);
+                // make output directory hidden
+                DirectoryInfo di = Directory.CreateDirectory(dstPath);
+                di.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
                 
-                dstPath = this.outputFolder + "\\" + year + "\\" + month + "\\";
-                File.Copy(path, dstPath + Path.GetFileName(path));
+                if (!Directory.Exists(this.outputFolder + @"\Thumbnails"))
+                {
+                    Directory.CreateDirectory(this.outputFolder + @"\Thumbnails");
+                }
+                //Directory.CreateDirectory(this.outputFolder + "\\" + year + "\\");
+                Directory.CreateDirectory(this.outputFolder + "\\" + year + "\\" + month + "\\");
+               // Directory.CreateDirectory(this.outputFolder + @"\Thumbnails" + "\\" + year + "\\");
+                Directory.CreateDirectory(Path.Combine(this.outputFolder + @"\Thumbnails", year, month));
 
-                Image image  = Image.FromFile(path);
-                Image thumb = image.GetThumbnailImage(this.thumbSize, this.thumbSize, () => false, IntPtr.Zero);
-                t_path = this.outputFolder + "\\Thumbnails" + "\\" + year + "\\" + month + "\\" + Path.GetFileName(path);
-                thumb.Save(t_path);
-                Path.ChangeExtension(t_path, ".thumbnail");
+                message += AddToFolder(src, dstPath, Path.GetFileName(src));
+                message += AddToTumbnailFolder(src, dstPath, Path.GetFileName(src), dateTime);
+
                 result = true;
-                return Path.GetFileName(path) + "added successfuly";
+                return message;
                 
             } catch (Exception e)
             {
@@ -62,6 +62,40 @@ namespace ImageService.Modal
 
         }
 
+        private string AddToFolder(string source, string dstPath, string fileName)
+        {
+            string message = "";//, fileName = Path.GetFileName(source);
+            if (!File.Exists(dstPath + fileName))
+            {
+                File.Copy(source, dstPath + fileName);
+                message += String.Format("{0} added successfuly to {1}", fileName, dstPath);
+            }
+            else
+            {
+                message += AddToFolder(source, dstPath, "cpy_" + fileName);
+            }
+            return message;
+        }
+
+        private string AddToTumbnailFolder(string source, string dstPath, string fileName, DateTime dt)
+        {
+            string message = "";
+            string output = Path.Combine(this.outputFolder, @"\Thumbnails", dt.Year.ToString(),
+                dt.Month.ToString(), fileName);
+            if (!File.Exists(output))
+            {
+                Image image = Image.FromFile(source);
+                Image thumb = image.GetThumbnailImage(this.thumbSize, this.thumbSize, () => false, IntPtr.Zero);
+               
+                thumb.Save(output);
+                Path.ChangeExtension(output, ".thumbnail");
+            }
+            else
+            {
+                message += AddToTumbnailFolder(source, dstPath, "cpy_" + fileName, dt);
+            }
+            return message;
+        }
     }
 
 }

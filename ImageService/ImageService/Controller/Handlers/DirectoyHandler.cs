@@ -5,8 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ImageService.Infrastructure;
-using ImageService.Infrastructure.Enums;
+//using ImageService.Infrastructure;
+//using ImageService.Infrastructure.Enums;
 using ImageService.Logging;
 using ImageService.Logging.Modal;
 using System.Text.RegularExpressions;
@@ -39,14 +39,12 @@ namespace ImageService.Controller.Handlers
         public void StartHandleDirectory(string dirPath) 
         {
             this.m_logging.Log("initiate directory handler from:" + dirPath, MessageTypeEnum.INFO);
-            
-            // adding existing files ???
-
-            this.m_dirWatcher.Created += new FileSystemEventHandler(this.onChanged);
-            this.m_dirWatcher.Changed += new FileSystemEventHandler(this.onChanged);
+            this.m_dirWatcher.Created += new FileSystemEventHandler(this.OnChanged);
+            this.m_dirWatcher.Changed += new FileSystemEventHandler(this.OnChanged);
             this.m_dirWatcher.EnableRaisingEvents = true;
             this.m_logging.Log("begin watching" + dirPath, MessageTypeEnum.INFO);
-        }                                                   
+        }                           
+        
         public void OnCommandRecieved(object sender, CommandRecievedEventArgs e) {     // The Event that will be activated upon new Command
 		    bool res;
             string msg = this.m_controller.ExecuteCommand(e.CommandID, e.Args, out res);
@@ -64,19 +62,19 @@ namespace ImageService.Controller.Handlers
             if (this.extentions.Contains(ext)) {
                string[] parameters = { e.FullPath };
                this.OnCommandRecieved(this, new CommandRecievedEventArgs((int)CommandID.addFile, parameters, ""));
-                
             }                                              
          }
 
         public void OnClosed(object sender, DirectoryCloseEventArgs e) {
             
             try {
-                this.m_dirWatcher = false;
+                this.m_dirWatcher.EnableRaisingEvents = false;
                 ((Server.ImageServer) sender).CommandRecieved -= this.OnCommandRecieved;
                 this.m_logging.Log("handler closed" + this.m_path, MessageTypeEnum.INFO);
             }
-            catch (Exception e) {
-                this.m_logging.Log("cannot close handler" + this.m_path + " " + e.Message.ToString(), MessageTypeEnum.FAIL);
+            catch (Exception ex) {
+                this.m_logging.Log(String.Format("cannot close handler of dir {0}, msg: {1}",
+                    this.m_path, ex.Message.ToString()), MessageTypeEnum.FAIL);
             }
 
         }
