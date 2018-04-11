@@ -4,6 +4,7 @@ using ImageService.Logging;
 using ImageService.Modal;
 using System;
 using System.Configuration;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,7 +34,8 @@ namespace ImageService.Server
             foreach (string s in dirs) {
                 try 
                 {
-                    this.InitHandler(s);
+                    if (Directory.Exists(s))
+                        this.InitHandler(s);
                 } catch(Exception e) {
                     this.m_logging.Log("Failed initiating handler, " + s + ", " +e.Message.ToString(), Logging.Modal.MessageTypeEnum.FAIL);
                 }

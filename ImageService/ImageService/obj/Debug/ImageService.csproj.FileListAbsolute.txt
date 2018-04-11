@@ -8,7 +8,6 @@ C:\Users\Itay\Documents\Visual Studio 2017\repos\ImageService\ImageService\bin\D
 C:\Users\Itay\Documents\Visual Studio 2017\repos\ImageService\ImageService\bin\Debug\ImageService.pdb
 C:\Users\Itay\Documents\Visual Studio 2017\repos\ImageService\ImageService\obj\Debug\ImageService.exe
 C:\Users\Itay\Documents\Visual Studio 2017\repos\ImageService\ImageService\obj\Debug\ImageService.pdb
-C:\Users\Itay\Source\Repos\ImageLogger\ImageService\ImageService\obj\Debug\ImageService.csprojResolveAssemblyReference.cache
 C:\Users\Itay\Source\Repos\ImageLogger\ImageService\ImageService\obj\Debug\ImageService.ProjectInstaller.resources
 C:\Users\Itay\Source\Repos\ImageLogger\ImageService\ImageService\obj\Debug\ImageService.csproj.GenerateResource.cache
 C:\Users\Itay\Source\Repos\ImageLogger\ImageService\ImageService\obj\Debug\ImageService.csproj.CoreCompileInputs.cache
@@ -18,3 +17,4 @@ C:\Users\Itay\Source\Repos\ImageLogger\ImageService\ImageService\obj\Debug\Image
 C:\Users\Itay\Source\Repos\ImageLogger\ImageService\ImageService\bin\Debug\ImageService.exe.config
 C:\Users\Itay\Source\Repos\ImageLogger\ImageService\ImageService\bin\Debug\ImageService.exe
 C:\Users\Itay\Source\Repos\ImageLogger\ImageService\ImageService\bin\Debug\ImageService.pdb
+C:\Users\Itay\Source\Repos\ImageLogger\ImageService\ImageService\obj\Debug\ImageService.csprojResolveAssemblyReference.cache

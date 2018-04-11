@@ -54,12 +54,12 @@ namespace ImageService
 
         private void eventLog1_EntryWritten(object sender, EntryWrittenEventArgs e)
         {
-            throw new NotImplementedException();
+           // throw new NotImplementedException();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+           // throw new NotImplementedException();
         }
 
         #endregion

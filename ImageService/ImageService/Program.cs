@@ -17,9 +17,13 @@ namespace ImageService
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[]
             {
-                new ImageService(args)
+                    new ImageService(args)
             };
             ServiceBase.Run(ServicesToRun);
+            //bool flag;
+            //Modal.ImageServiceModal image = new Modal.ImageServiceModal(@"C:\Users\Itay\Pictures\target", 120);
+            //image.AddFile(@"C:\Users\Itay\Pictures\sampl - Copy.png", out flag);
+
         }
     }
 }

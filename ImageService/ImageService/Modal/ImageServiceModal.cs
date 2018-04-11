@@ -43,13 +43,11 @@ namespace ImageService.Modal
                 {
                     Directory.CreateDirectory(this.outputFolder + @"\Thumbnails");
                 }
-                //Directory.CreateDirectory(this.outputFolder + "\\" + year + "\\");
                 Directory.CreateDirectory(this.outputFolder + "\\" + year + "\\" + month + "\\");
-               // Directory.CreateDirectory(this.outputFolder + @"\Thumbnails" + "\\" + year + "\\");
                 Directory.CreateDirectory(Path.Combine(this.outputFolder + @"\Thumbnails", year, month));
 
                 message += AddToFolder(src, dstPath, Path.GetFileName(src));
-                message += AddToTumbnailFolder(src, dstPath, Path.GetFileName(src), dateTime);
+                message += AddToTumbnailFolder(src, this.outputFolder, Path.GetFileName(src), dateTime);
 
                 result = true;
                 return message;
@@ -64,10 +62,10 @@ namespace ImageService.Modal
 
         private string AddToFolder(string source, string dstPath, string fileName)
         {
-            string message = "";//, fileName = Path.GetFileName(source);
-            if (!File.Exists(dstPath + fileName))
+            string message = "";
+            if (!File.Exists(Path.Combine(dstPath, fileName)))
             {
-                File.Copy(source, dstPath + fileName);
+                File.Copy(source, Path.Combine(dstPath, fileName));
                 message += String.Format("{0} added successfuly to {1}", fileName, dstPath);
             }
             else
@@ -80,8 +78,8 @@ namespace ImageService.Modal
         private string AddToTumbnailFolder(string source, string dstPath, string fileName, DateTime dt)
         {
             string message = "";
-            string output = Path.Combine(this.outputFolder, @"\Thumbnails", dt.Year.ToString(),
-                dt.Month.ToString(), fileName);
+            string output = dstPath + "\\Thumbnails";
+            output = Path.Combine(output, dt.Year.ToString(), dt.Month.ToString(), fileName);
             if (!File.Exists(output))
             {
                 Image image = Image.FromFile(source);
@@ -89,6 +87,7 @@ namespace ImageService.Modal
                
                 thumb.Save(output);
                 Path.ChangeExtension(output, ".thumbnail");
+                message += String.Format("\n{0} added successfuly to {1}", fileName, output);
             }
             else
             {

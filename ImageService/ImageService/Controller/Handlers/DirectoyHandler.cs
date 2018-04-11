@@ -42,7 +42,7 @@ namespace ImageService.Controller.Handlers
             this.m_dirWatcher.Created += new FileSystemEventHandler(this.OnChanged);
             this.m_dirWatcher.Changed += new FileSystemEventHandler(this.OnChanged);
             this.m_dirWatcher.EnableRaisingEvents = true;
-            this.m_logging.Log("begin watching" + dirPath, MessageTypeEnum.INFO);
+            this.m_logging.Log("begin watching " + dirPath, MessageTypeEnum.INFO);
         }                           
         
         public void OnCommandRecieved(object sender, CommandRecievedEventArgs e) {     // The Event that will be activated upon new Command
@@ -57,7 +57,7 @@ namespace ImageService.Controller.Handlers
         }
         private void OnChanged(object sender, FileSystemEventArgs e)
          {
-            this.m_logging.Log("New file added" + e.FullPath, MessageTypeEnum.INFO);
+            this.m_logging.Log("New file added " + e.FullPath, MessageTypeEnum.INFO);
             string ext = Path.GetExtension(e.FullPath);
             if (this.extentions.Contains(ext)) {
                string[] parameters = { e.FullPath };
