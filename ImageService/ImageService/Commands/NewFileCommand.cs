@@ -22,7 +22,7 @@ namespace ImageService.Commands
             // The String Will Return the New Path if result = true, and will return the error message
             try
             {
-                if (args.Length > 0)// && File.Exists(args[0]))
+                if (args.Length > 0)
                 {
                     return m_modal.AddFile(args[0], out result);
                 }
