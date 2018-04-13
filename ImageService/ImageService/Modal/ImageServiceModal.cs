@@ -16,11 +16,23 @@ namespace ImageService.Modal
         private string outputFolder { get; set; }
         private int thumbSize { get; set; }
 
+
+        /*
+         * Construct ImageServiceMidal by destenation path and size of thumbnail
+         */
         public ImageServiceModal(string target, int thumbnail)
         {
             this.outputFolder = target;
             this.thumbSize = thumbnail;
         }
+
+
+        /*
+         * The functions adding file by getting its src and its dst from constructor's class.
+         * It opens relevant directories derives from the path and puts the file in the relevant 
+         * year and date directories relying on the file's creation date.
+         * It also creates a thumbnails picture in different directory.
+         */
         public string AddFile(string src, out bool result)
         {
             string year, month, dstPath, t_src, message = String.Empty;
@@ -60,6 +72,9 @@ namespace ImageService.Modal
 
         }
 
+        /*
+         * The function adds a file to specific diretory relying on src and dst pathes
+         */ 
         private string AddToFolder(string source, string dstPath, string fileName)
         {
             string message = "";
@@ -75,6 +90,10 @@ namespace ImageService.Modal
             return message;
         }
 
+
+        /*
+        * The function adds a thumbnail file to specific diretory relying on src and dst pathes
+        */
         private string AddToTumbnailFolder(string source, string dstPath, string fileName, DateTime dt)
         {
             string message = "";

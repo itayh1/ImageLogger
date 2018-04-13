@@ -18,12 +18,18 @@ namespace ImageService.Server
         private IImageController m_controller;
         private ILoggingService m_logging;
         #endregion
-        
-        #region Properties
-        public event EventHandler<CommandRecievedEventArgs> CommandRecieved;          // The event that notifies about a new Command being recieved
-        public event EventHandler<DirectoryCloseEventArgs> closeCommand;
 
+        #region Properties
+        // The event that notifies about a new Command being recieved
+        public event EventHandler<CommandRecievedEventArgs> CommandRecieved;
+        
+        // The event that notifies about a close Command being recieved
+        public event EventHandler<DirectoryCloseEventArgs> closeCommand;
         #endregion
+
+        /*
+         * Construct ImageServer by imageController and loggingService
+         */
         public ImageServer(IImageController iic, ILoggingService ils)
         {
             this.m_controller = iic;
@@ -42,6 +48,9 @@ namespace ImageService.Server
             }
         }
 
+        /*
+         * The function initializes Directoryhandler given a path input
+         */
         public void InitHandler(string path) 
         {
             IDirectoryHandler dir = new DirectoyHandler(this.m_controller, this.m_logging, path);
@@ -50,6 +59,10 @@ namespace ImageService.Server
             dir.StartHandleDirectory(path);
             this.m_logging.Log("An handler has been initialized, "+path, Logging.Modal.MessageTypeEnum.INFO );
         }
+
+        /*
+         * The function close the server
+         */ 
         public void ServerClose() {
             try {
                 this.closeCommand?.Invoke(this, null);

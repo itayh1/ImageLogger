@@ -25,8 +25,12 @@ namespace ImageService.Controller.Handlers
         private readonly string[] extentions = {".jpg", ".png", ".gif", ".bmp"};
         #endregion
 
-        public event EventHandler<DirectoryCloseEventArgs> DirectoryClose;              // The Event That Notifies that the Directory is being closed
+        // The Event That Notifies that the Directory is being closed
+        public event EventHandler<DirectoryCloseEventArgs> DirectoryClose;             
 
+        /*
+         * Construct Directory handler 
+         */
         public DirectoyHandler(IImageController ic, ILoggingService ls, string path) 
         {
             this.m_controller = ic;
@@ -36,6 +40,9 @@ namespace ImageService.Controller.Handlers
         
         }                                                                 
 
+        /*
+         * The function getting  a directory path and start handeling the directory by watching its actions
+         */
         public void StartHandleDirectory(string dirPath) 
         {
             this.m_logging.Log("initiate directory handler from:" + dirPath, MessageTypeEnum.INFO);
@@ -43,9 +50,13 @@ namespace ImageService.Controller.Handlers
             this.m_dirWatcher.Changed += new FileSystemEventHandler(this.OnChanged);
             this.m_dirWatcher.EnableRaisingEvents = true;
             this.m_logging.Log("begin watching " + dirPath, MessageTypeEnum.INFO);
-        }                           
-        
-        public void OnCommandRecieved(object sender, CommandRecievedEventArgs e) {     // The Event that will be activated upon new Command
+        }
+
+
+        /*
+         * The Event that will be activated upon new Command
+         */
+        public void OnCommandRecieved(object sender, CommandRecievedEventArgs e) {
 		    bool res;
             string msg = this.m_controller.ExecuteCommand(e.CommandID, e.Args, out res);
             if (res) {
@@ -55,6 +66,11 @@ namespace ImageService.Controller.Handlers
                 this.m_logging.Log(msg, MessageTypeEnum.FAIL);
             }
         }
+
+
+        /*
+         * The function updates the logger new file added and deals with file's extension
+         */
         private void OnChanged(object sender, FileSystemEventArgs e)
          {
             this.m_logging.Log("New file added " + e.FullPath, MessageTypeEnum.INFO);
@@ -65,6 +81,10 @@ namespace ImageService.Controller.Handlers
             }                                              
          }
 
+
+        /*
+         * The function updates the logger of close action and stops watcher
+         */
         public void OnClosed(object sender, DirectoryCloseEventArgs e) {
             
             try {

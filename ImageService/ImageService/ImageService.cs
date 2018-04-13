@@ -48,15 +48,20 @@ namespace ImageService
         private Controller.IImageController controller;
         private ILoggingService logging;
         
-        public ImageService(string[] args)
-        {
+        /*
+         * Construct ImageServic by app configurations, modal, controller and logger
+         */
+        public ImageService(string[] args) {
+
             InitializeComponent();
 
-            string targetPath = ConfigurationManager.AppSettings["OutputDir"];
+            string targetPath = ConfigurationManager.AppSettings["OutputDir"];  // destenation dir
             targetPath = targetPath.Replace(";", "");
-            string eventSourceName = ConfigurationManager.AppSettings["SourceName"];//"MySource";
-            string logName = ConfigurationManager.AppSettings["LogName"];  //"MyNewLog";
+            string eventSourceName = ConfigurationManager.AppSettings["SourceName"];   //  "MySource";
+            string logName = ConfigurationManager.AppSettings["LogName"];    //  "MyNewLog";
             int thumbnail = int.Parse(ConfigurationManager.AppSettings["ThumbnailSize"]);
+
+
             if (args.Count() > 0)
             {
                 eventSourceName = args[0];
@@ -80,13 +85,20 @@ namespace ImageService
             this.m_imageServer = new Server.ImageServer(this.controller, this.logging);
         }
 
+        /*
+         * The function updates logger by a massage
+         */
         private void updateLog(object sender, Logging.Modal.MessageRecievedEventArgs e)
         {
             this.eventLog1.WriteEntry(e.Message.ToString());
         }
 
-        protected override void OnStart(string[] args)
-        {
+
+        /*
+         * Te function stars the service process and update the logger
+         */
+        protected override void OnStart(string[] args) {
+
             // Update the service state to Start Pending.  
             ServiceStatus serviceStatus = new ServiceStatus();
             serviceStatus.dwCurrentState = ServiceState.SERVICE_START_PENDING;
@@ -105,6 +117,10 @@ namespace ImageService
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
         }
 
+
+        /*
+         * The function stops the service and update logger
+         */
         protected override void OnStop()
         {
             this.eventLog1.WriteEntry("In onStop.");
@@ -112,11 +128,18 @@ namespace ImageService
             this.eventLog1.WriteEntry("stop service.");
         }
 
+        /*
+         * The function update logger of countinuios activation
+         */
         protected override void OnContinue()
         {
             eventLog1.WriteEntry("In OnContinue.");
         }
 
+
+        /*
+         * The function update logger on monitoring by system's timer
+         */
         public void OnTimer(object sender, System.Timers.ElapsedEventArgs args)
         {
             eventLog1.WriteEntry("Monitoring the System", EventLogEntryType.Information, eventId++);

@@ -31,6 +31,7 @@ namespace ImageService.Commands
                     throw new Exception("Invalid NewFileCommand");
                 }
             }
+            // addind file did not succeed
             catch (Exception e)
             {
                 result = false;
