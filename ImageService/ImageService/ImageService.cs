@@ -55,13 +55,14 @@ namespace ImageService
 
             InitializeComponent();
 
+            // updates data from configurations manager
             string targetPath = ConfigurationManager.AppSettings["OutputDir"];  // destenation dir
             targetPath = targetPath.Replace(";", "");
             string eventSourceName = ConfigurationManager.AppSettings["SourceName"];   //  "MySource";
             string logName = ConfigurationManager.AppSettings["LogName"];    //  "MyNewLog";
             int thumbnail = int.Parse(ConfigurationManager.AppSettings["ThumbnailSize"]);
 
-
+            // init log and src
             if (args.Count() > 0)
             {
                 eventSourceName = args[0];
@@ -70,14 +71,18 @@ namespace ImageService
             {
                 logName = args[1];
             }
+
+            // create new eventLog by src
             eventLog1 = new EventLog();
             if (!EventLog.SourceExists(eventSourceName))
             {
                 EventLog.CreateEventSource(eventSourceName, logName);
             }
+
             eventLog1.Source = eventSourceName;
             eventLog1.Log = logName;
 
+            // construct all members
             this.modal = new Modal.ImageServiceModal(targetPath, thumbnail);
             this.controller = new Controller.ImageController(this.modal);
             this.logging = new LoggingService();
@@ -95,7 +100,7 @@ namespace ImageService
 
 
         /*
-         * Te function stars the service process and update the logger
+         * The function stars the service process and update the logger
          */
         protected override void OnStart(string[] args) {
 
