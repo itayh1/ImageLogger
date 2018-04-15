@@ -18,6 +18,9 @@ namespace ImageService
             };
 
             ServiceBase.Run(ServicesToRun);
+            //Modal.ImageServiceModal m = new Modal.ImageServiceModal(@"C:\Users\Itay\Pictures\target", 120);
+            //bool res;
+            //string str = m.AddFile(@"C:\Users\Itay\Pictures\sampl.png", out res);
         }
     }
 }

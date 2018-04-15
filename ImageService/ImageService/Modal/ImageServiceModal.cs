@@ -35,7 +35,7 @@ namespace ImageService.Modal
          */
         public string AddFile(string src, out bool result)
         {
-            string year, month, dstPath, t_src, message = String.Empty;
+            string year, month, dstPath, message = String.Empty;
 
             try
             {
@@ -43,13 +43,20 @@ namespace ImageService.Modal
                 {
                     throw new Exception("File missing!");
                 }
+                DirectoryInfo mainFolder = Directory.CreateDirectory(this.outputFolder);//new DirectoryInfo(this.outputFolder);
+                if ((mainFolder.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden)
+                {
+                    mainFolder.Attributes |= FileAttributes.Hidden;
+                }
+                
+
                 DateTime dateTime = File.GetCreationTime(src);
                 year = dateTime.Year.ToString();
                 month = dateTime.Month.ToString();
                 dstPath = Path.Combine(this.outputFolder, year, month);
                 // make output directory hidden
                 DirectoryInfo di = Directory.CreateDirectory(dstPath);
-                di.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
+               // di.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
                 
                 if (!Directory.Exists(this.outputFolder + @"\Thumbnails"))
                 {
@@ -57,9 +64,11 @@ namespace ImageService.Modal
                 }
                 Directory.CreateDirectory(this.outputFolder + "\\" + year + "\\" + month + "\\");
                 Directory.CreateDirectory(Path.Combine(this.outputFolder + @"\Thumbnails", year, month));
-
-                message += AddToFolder(src, dstPath, Path.GetFileName(src));
+                
+                //copy source file as thumbnail
                 message += AddToTumbnailFolder(src, this.outputFolder, Path.GetFileName(src), dateTime);
+                //move source file to target folder
+                message += AddToFolder(src, dstPath, Path.GetFileName(src));
 
                 result = true;
                 return message;
@@ -80,8 +89,8 @@ namespace ImageService.Modal
             string message = "";
             if (!File.Exists(Path.Combine(dstPath, fileName)))
             {
-                File.Copy(source, Path.Combine(dstPath, fileName));
-                message += String.Format("{0} added successfuly to {1}", fileName, dstPath);
+                File.Move(source, Path.Combine(dstPath, fileName));
+                message += String.Format("\n{0} added successfuly to {1}", fileName, dstPath);
             }
             else
             {
@@ -101,12 +110,14 @@ namespace ImageService.Modal
             output = Path.Combine(output, dt.Year.ToString(), dt.Month.ToString(), fileName);
             if (!File.Exists(output))
             {
-                Image image = Image.FromFile(source);
-                Image thumb = image.GetThumbnailImage(this.thumbSize, this.thumbSize, () => false, IntPtr.Zero);
-               
-                thumb.Save(output);
-                Path.ChangeExtension(output, ".thumbnail");
-                message += String.Format("\n{0} added successfuly to {1}", fileName, output);
+                using (Image image = Image.FromFile(source))
+                {
+                    Image thumb = image.GetThumbnailImage(this.thumbSize, this.thumbSize, () => false, IntPtr.Zero);
+
+                    thumb.Save(output);
+                    Path.ChangeExtension(output, ".thumbnail");
+                }
+                message += String.Format("{0} added successfuly to {1}", fileName, output);
             }
             else
             {
