@@ -16,14 +16,38 @@ namespace kinGUI
         {
             try
             {
-                IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
-                IPAddress ipAddress = ipHostInfo.AddressList[0];
-                IPEndPoint remoteEP = new IPEndPoint(ipAddress, 11000);
+                //IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
+                IPAddress ipAddress = IPAddress.Parse(ip);//ipHostInfo.AddressList[0];
+                IPEndPoint remoteEP = new IPEndPoint(ipAddress, port);
                 this.sender = new Socket(ipAddress.AddressFamily,
                     SocketType.Stream, ProtocolType.Tcp);
-            } catch (Exception e)
-            {
-
             }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message.ToString());
+            }
+        }
+
+        public void sendMessage(string msg)
+        {
+            byte[] message = Encoding.ASCII.GetBytes(msg);
+
+            // Send the data through the socket.  
+            //int bytesSent = 
+            sender.Send(message);
+        }
+        public string getMessage()
+        {
+            byte[] bytes = new byte[1024];
+            int bytesRec = sender.Receive(bytes);
+            return Encoding.ASCII.GetString(bytes, 0, bytesRec);
+
+        }
+
+        public void close()
+        {
+            this.sender.Shutdown(SocketShutdown.Both);
+            this.sender.Close();
+        }
     }
 }
