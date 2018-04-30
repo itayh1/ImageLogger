@@ -9,7 +9,8 @@ using System.Runtime.InteropServices;
 using System.Configuration;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Net.Sockets;
+using System.Net;
 
 namespace ImageService
 {    
@@ -41,12 +42,17 @@ namespace ImageService
         // code from the service guide.
         [DllImport("advapi32.dll", SetLastError = true)]
         private static extern bool SetServiceStatus(IntPtr handle, ref ServiceStatus serviceStatus);
-        //class members
+        // class members
         private int eventId = 1;
         private Server.ImageServer m_imageServer; 
         private Modal.IImageServiceModal modal;
         private Controller.IImageController controller;
         private ILoggingService logging;
+        // tcp connection
+        private int server_port = 5555;
+        private TcpListener listener;
+
+
         
         /*
          * Construct ImageServic by app configurations, modal, controller and logger
@@ -148,6 +154,32 @@ namespace ImageService
         public void OnTimer(object sender, System.Timers.ElapsedEventArgs args)
         {
             eventLog1.WriteEntry("Monitoring the System", EventLogEntryType.Information, eventId++);
+        }
+
+        public void Start()
+        {
+            IPEndPoint ep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), this.server_port);
+            this.listener = new TcpListener(ep);
+            this.listener.Start();
+            Console.WriteLine("Waiting for connections...");
+
+            Task task = new Task(() => {
+                while (true)
+                {
+                    try
+                    {
+                        TcpClient client = this.listener.AcceptTcpClient();
+                        Console.WriteLine("New connection");
+                        // handle client ...
+                    }
+                    catch (Exception)
+                    {
+                        break;
+                    }
+                }
+                Console.WriteLine("Server stopped");
+            });
+            task.Start();
         }
 
     }
