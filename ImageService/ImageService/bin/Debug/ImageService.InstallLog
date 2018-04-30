@@ -213,3 +213,11 @@ Affected parameters are:
    logtoconsole = 
    logfile = C:\Users\Itay\Source\Repos\ImageLogger\ImageService\ImageService\bin\Debug\ImageService.InstallLog
    assemblypath = C:\Users\Itay\Source\Repos\ImageLogger\ImageService\ImageService\bin\Debug\ImageService.exe
+Uninstalling assembly 'C:\Users\Itay\Source\Repos\ImageLogger\ImageService\ImageService\bin\Debug\ImageService.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Users\Itay\Source\Repos\ImageLogger\ImageService\ImageService\bin\Debug\ImageService.InstallLog
+   assemblypath = C:\Users\Itay\Source\Repos\ImageLogger\ImageService\ImageService\bin\Debug\ImageService.exe
+Removing EventLog source MyNewService.
+Service MyNewService is being removed from the system...
+Service MyNewService was successfully removed from the system.
