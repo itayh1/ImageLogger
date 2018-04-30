@@ -20,9 +20,15 @@ namespace kinGUI
     /// </summary>
     public partial class MainWindow : Window
     {
+        private VClient client;
+
         public MainWindow()
         {
             InitializeComponent();
+
+            this.client = new VClient("127.0.0.1", 5555);
+
+
         }
     }
 }
