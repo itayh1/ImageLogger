@@ -32,12 +32,27 @@ namespace kinGUI
             set { this.model.OutputDir = value; }
         }
 
-        public string SourceName => throw new NotImplementedException();
+        public string SourceName
+        {
+            get { return this.model.SourceName; }
+            set { this.model.SourceName = value; }
+        }
 
-        public string LogName => throw new NotImplementedException();
+        public string LogName
+        {
+            get { return this.model.LogName; }
+            set { this.model.LogName = value; }
+        }
 
-        public int ThumbnailSize => throw new NotImplementedException();
+        public int ThumbnailSize
+        {
+            get { return this.model.ThumbnailSize; }
+            set { this.model.ThumbnailSize = value; }
+        }
 
-        public ObservableCollection<string> Handles => throw new NotImplementedException();
+        public ObservableCollection<string> Handlers
+        {
+            get { return this.model.Handlers; }
+        }
     }
 }

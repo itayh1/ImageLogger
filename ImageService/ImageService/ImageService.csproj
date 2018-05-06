@@ -41,6 +41,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -53,6 +54,8 @@
   <ItemGroup>
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\NewFileCommand.cs" />
+    <Compile Include="Communicator.cs" />
+    <Compile Include="ConfigurationData.cs" />
     <Compile Include="Controller\Handlers\DirectoyHandler.cs" />
     <Compile Include="Controller\Handlers\IDirectoryHandler.cs" />
     <Compile Include="Controller\IImageController.cs" />
@@ -62,6 +65,7 @@
     <Compile Include="Logger\LoggingModal\MessageRecievedEventArgs.cs" />
     <Compile Include="Logger\LoggingModal\MessageTypeEnum.cs" />
     <Compile Include="Logger\LoggingService.cs" />
+    <Compile Include="MessageCommand.cs" />
     <Compile Include="Modal\Event\CommandRecievedEventArgs.cs" />
     <Compile Include="Modal\Event\DirectoryCloseEventArgs.cs" />
     <Compile Include="Modal\IImageServiceModal.cs" />

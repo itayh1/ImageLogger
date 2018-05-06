@@ -10,6 +10,7 @@ namespace kinGUI
 {
     class ModelSetting : INotifyPropertyChanged
     {
+        private VClient client;
         private string outputDir;
         private string logName;
         private string sourceName;
@@ -17,12 +18,21 @@ namespace kinGUI
         private ObservableCollection<string> handlers;
 
         public event PropertyChangedEventHandler PropertyChanged;
-
+        public ModelSetting()
+        {
+            Console.WriteLine("Ctor Model");
+            this.client = new VClient("127.0.0.1", 8888);
+            this.outputDir = "asd";
+        }
         public void NotifyPropertyChanged(string propName)
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
 
+        public void SetSettings()
+        {
+
+        }
         public string OutputDir
         {
             get { return this.outputDir; }
@@ -44,7 +54,7 @@ namespace kinGUI
             set { this.thumbnailSize = value;
                 NotifyPropertyChanged("ThumbnailSize"); }
             }
-        public ObservableCollection<string> Handles {
+        public ObservableCollection<string> Handlers {
             get { return this.handlers; }
             set { this.handlers = value;
                 NotifyPropertyChanged("Handlers");  }

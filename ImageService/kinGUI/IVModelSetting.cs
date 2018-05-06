@@ -14,6 +14,6 @@ namespace kinGUI
         string SourceName { get; }
         string LogName { get; }
         int ThumbnailSize { get; }
-        ObservableCollection<string> Handles { get; }
+        ObservableCollection<string> Handlers { get; }
     }
 }

@@ -30,12 +30,10 @@ namespace ImageService.Server
         /*
          * Construct ImageServer by imageController and loggingService
          */
-        public ImageServer(IImageController iic, ILoggingService ils)
+        public ImageServer(IImageController iic, ILoggingService ils, string[] dirs)
         {
             this.m_controller = iic;
             this.m_logging = ils;
-
-            string[] dirs = ConfigurationManager.AppSettings["Handler"].Split(';');
 
             foreach (string s in dirs) {
                 try 

@@ -8,9 +8,6 @@ using System.ServiceProcess;
 using System.Runtime.InteropServices;
 using System.Configuration;
 using System.Text;
-using System.Threading.Tasks;
-using System.Net.Sockets;
-using System.Net;
 
 namespace ImageService
 {    
@@ -48,12 +45,7 @@ namespace ImageService
         private Modal.IImageServiceModal modal;
         private Controller.IImageController controller;
         private ILoggingService logging;
-        // tcp connection
-        private int server_port = 5555;
-        private TcpListener listener;
-
-
-        
+                
         /*
          * Construct ImageServic by app configurations, modal, controller and logger
          */
@@ -67,8 +59,13 @@ namespace ImageService
             string eventSourceName = ConfigurationManager.AppSettings["SourceName"];   //  "MySource";
             string logName = ConfigurationManager.AppSettings["LogName"];    //  "MyNewLog";
             int thumbnail = int.Parse(ConfigurationManager.AppSettings["ThumbnailSize"]);
-
-            // init log and src
+            string[] dirs = ConfigurationManager.AppSettings["Handler"].Split(';');
+            if (dirs[dirs.Length-1].Trim(' ') == string.Empty)
+            {
+                dirs = dirs.Take<string>(dirs.Length - 1).ToArray<string>();
+            }
+            Communicator communicator = new Communicator(targetPath, eventSourceName, logName, thumbnail, dirs);
+            communicator.Start();
             if (args.Count() > 0)
             {
                 eventSourceName = args[0];
@@ -93,7 +90,7 @@ namespace ImageService
             this.controller = new Controller.ImageController(this.modal);
             this.logging = new LoggingService();
             this.logging.MessageRecieved += updateLog;
-            this.m_imageServer = new Server.ImageServer(this.controller, this.logging);
+            this.m_imageServer = new Server.ImageServer(this.controller, this.logging, dirs);
         }
 
         /*
@@ -156,31 +153,7 @@ namespace ImageService
             eventLog1.WriteEntry("Monitoring the System", EventLogEntryType.Information, eventId++);
         }
 
-        public void Start()
-        {
-            IPEndPoint ep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), this.server_port);
-            this.listener = new TcpListener(ep);
-            this.listener.Start();
-            Console.WriteLine("Waiting for connections...");
-
-            Task task = new Task(() => {
-                while (true)
-                {
-                    try
-                    {
-                        TcpClient client = this.listener.AcceptTcpClient();
-                        Console.WriteLine("New connection");
-                        // handle client ...
-                    }
-                    catch (Exception)
-                    {
-                        break;
-                    }
-                }
-                Console.WriteLine("Server stopped");
-            });
-            task.Start();
-        }
+        
 
     }
 }
