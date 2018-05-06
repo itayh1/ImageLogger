@@ -32,7 +32,7 @@
                         <TextBlock Grid.Row="3" Grid.Column="1" Padding="3" Margin="3" Text="complete data binding"></TextBlock>
                         <StackPanel Grid.Row="4" Grid.ColumnSpan="2" Orientation="Vertical">
                             <Button>Remove</Button>
-                            <ListView Margin="10" Name="">
+                            <ListView Margin="10" ItemsSource="{Binding Handlers}" x:Name="sourceList">
                                 <ListViewItem>itay</ListViewItem>
                                 <ListViewItem>omer</ListViewItem>
                             </ListView>

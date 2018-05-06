@@ -20,15 +20,16 @@ namespace kinGUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        private VClient client;
+        // private VClient client;
+        private IVModelSetting viewModel;
 
         public MainWindow()
         {
             InitializeComponent();
-
-            this.client = new VClient("127.0.0.1", 5555);
-
-
+            //this.client = new VClient("127.0.0.1", 5555);
+            this.viewModel = new VModelSetting();
+            this.DataContext = this.viewModel;
+            //((Vie this.DataContex
         }
     }
 }
