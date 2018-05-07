@@ -22,9 +22,11 @@ namespace kinGUI
         public ModelSetting()
         {
             Console.WriteLine("Ctor Model");
-            this.client = new VClient("127.0.0.1", 8888);
+            //this.client = new VClient("127.0.0.1", 8888);
 
             this.outputDir = "asd";
+            this.sourceName = "asfasgfs";
+            this.thumbnailSize = 324235;
             this.handlers = new ObservableCollection<string>();
             this.handlers.Add("hello");
             this.handlers.Add("hellosdas");
@@ -42,10 +44,37 @@ namespace kinGUI
                 (int)CommandEnum.GetConfigCommand, null, string.Empty);
             var serializer = new JavaScriptSerializer();
             var serializedData = serializer.Serialize(command);
+            //send request for appconfig
             this.client.sendMessage(serializedData.ToString());
+            // get appconfig
             message = this.client.getMessage();
-
+            command = serializer.Deserialize<CommandRecievedEventArgs>(message);
+            ConfigurationData cd = serializer.Deserialize
+                <ConfigurationData>(command.Args[0]);
+            this.outputDir = cd.outputDir;
+            this.logName = cd.sourceName;
+            this.sourceName = cd.sourceName;
+            this.thumbnailSize = cd.thumbnailSize;
+            this.handlers = new ObservableCollection<string>(cd.handlers);
         }
+
+        public void Removehandler(string handler)
+        {
+            string message;
+            CommandRecievedEventArgs command = new CommandRecievedEventArgs(
+                (int)CommandEnum.CloseCommand, new string[] { handler }, string.Empty);
+            var serializer = new JavaScriptSerializer();
+            var serializedData = serializer.Serialize(command);
+            //send request for appconfig
+            this.client.sendMessage(serializedData.ToString());
+            
+            //message = this.client.getMessage();
+            //command = serializer.Deserialize<CommandRecievedEventArgs>(message);
+            //ConfigurationData cd = serializer.Deserialize
+            //    <ConfigurationData>(command.Args[0]);
+            //this.client.sendMessage
+        }
+
         public string OutputDir
         {
             get { return this.outputDir; }

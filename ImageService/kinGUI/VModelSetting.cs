@@ -5,12 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
+using System.Windows.Input;
+using Microsoft.Practices.Prism.Commands;
 
 namespace kinGUI
 {
     class VModelSetting : IVModelSetting
     {
         ModelSetting model;
+
+        private ICommand RemoveCommand { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -25,6 +29,7 @@ namespace kinGUI
             Console.WriteLine("Ctor VModelSetting");
             this.model = new ModelSetting();
 
+            this.RemoveCommand = new DelegateCommand(this.Submit, this.CanSubmit);
 
         }
         public string OutputDir
@@ -54,6 +59,23 @@ namespace kinGUI
         public ObservableCollection<String> Handlers
         {
             get { return this.model.Handlers; }
+        }
+
+        public string SelectedItem
+        {
+            get; set;
+        }
+
+        public void Submit()
+        {
+            this.model.Removehandler(this.SelectedItem);
+        }
+
+        public bool CanSubmit()
+        {
+            if (this.SelectedItem != null)
+                return true;
+            return false;
         }
     }
 }
