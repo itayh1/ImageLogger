@@ -33,8 +33,13 @@
                         <StackPanel Grid.Row="4" Grid.ColumnSpan="2" Orientation="Vertical">
                             <Button>Remove</Button>
                             <ListView Margin="10" ItemsSource="{Binding Handlers}" x:Name="sourceList">
-                                <ListViewItem>itay</ListViewItem>
-                                <ListViewItem>omer</ListViewItem>
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
                             </ListView>
                         </StackPanel>
                     </Grid>

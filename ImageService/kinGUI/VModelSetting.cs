@@ -25,6 +25,7 @@ namespace kinGUI
             Console.WriteLine("Ctor VModelSetting");
             this.model = new ModelSetting();
 
+
         }
         public string OutputDir
         {
@@ -50,7 +51,7 @@ namespace kinGUI
             set { this.model.ThumbnailSize = value; }
         }
 
-        public ObservableCollection<string> Handlers
+        public ObservableCollection<String> Handlers
         {
             get { return this.model.Handlers; }
         }

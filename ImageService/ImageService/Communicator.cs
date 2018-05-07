@@ -63,8 +63,15 @@ namespace ImageService
                 Int32 bytes = stream.Read(data, 0, data.Length);
                 msg = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
                 Console.WriteLine("msg: {0}",msg);
-                MessageCommand mc = (MessageCommand)new JavaScriptSerializer().DeserializeObject(msg);
+                 Modal.CommandRecievedEventArgs mc = (Modal.CommandRecievedEventArgs)
+                    new JavaScriptSerializer().DeserializeObject(msg);
+
             }
+        }
+
+        public void Stop()
+        {
+
         }
     }
 }

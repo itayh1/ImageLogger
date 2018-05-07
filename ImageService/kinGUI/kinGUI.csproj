@@ -39,6 +39,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -57,8 +58,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CommandEnum.cs" />
+    <Compile Include="CommandRecievedEventArgs.cs" />
     <Compile Include="ConfigurationData.cs" />
-    <Compile Include="MessageCommand.cs" />
     <Compile Include="ModelSetting.cs" />
     <Compile Include="IVModelSetting.cs" />
     <Compile Include="VModelSetting.cs" />
@@ -103,6 +105,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Commands\" />
     <Folder Include="Model\" />
     <Folder Include="ViewModel\" />
     <Folder Include="View\" />
