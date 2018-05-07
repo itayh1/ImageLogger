@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:kinGUI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800"
+        Background="Blue">
     <Grid>
         <TabControl>
             <TabItem Header="Settings">
@@ -31,8 +32,8 @@
                         <TextBlock Grid.Row="3" Grid.Column="0" Padding="3" Margin="3">Thumbnail Size:</TextBlock>
                         <TextBlock Grid.Row="3" Grid.Column="1" Padding="3" Margin="3" Text="{Binding ThumbnailSize}"></TextBlock>
                         <StackPanel Grid.Row="4" Grid.ColumnSpan="2" Orientation="Vertical">
-                            <Button>Remove</Button>
-                            <ListView Margin="10" ItemsSource="{Binding Handlers}" x:Name="sourceList">
+                            <Button Command="{Binding RemoveCommand}">Remove</Button>
+                            <ListView Margin="10" ItemsSource="{Binding Handlers}" SelectedItem="{Binding SelectedItem}" x:Name="sourceList">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
