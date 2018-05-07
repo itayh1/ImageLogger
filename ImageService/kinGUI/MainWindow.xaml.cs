@@ -31,5 +31,15 @@ namespace kinGUI
             this.DataContext = this.viewModel;
             //((Vie this.DataContex
         }
+
+        private void TextBlock_StylusOutOfRange(object sender, StylusEventArgs e)
+        {
+
+        }
+
+        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }
