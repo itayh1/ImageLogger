@@ -17,12 +17,14 @@ namespace kinGUI
         private string sourceName;
         private int thumbnailSize;
         private ObservableCollection<string> handlers;
-
         public event PropertyChangedEventHandler PropertyChanged;
+
         public ModelSetting()
         {
             Console.WriteLine("Ctor Model");
-            //this.client = new VClient("127.0.0.1", 8888);
+            Controler controler = new Controler();
+            //this.client = VClient.Instance;
+            //this.client.OnCommandRecieved += this.OnCommandRecieved;
 
             this.outputDir = "asd";
             this.sourceName = "asfasgfs";
@@ -37,20 +39,11 @@ namespace kinGUI
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
 
-        public void SetSettings()
+        public void SetSettings(CommandRecievedEventArgs e)
         {
-            string message;
-            CommandRecievedEventArgs command = new CommandRecievedEventArgs(
-                (int)CommandEnum.GetConfigCommand, null, string.Empty);
             var serializer = new JavaScriptSerializer();
-            var serializedData = serializer.Serialize(command);
-            //send request for appconfig
-            this.client.sendMessage(serializedData.ToString());
-            // get appconfig
-            message = this.client.getMessage();
-            command = serializer.Deserialize<CommandRecievedEventArgs>(message);
             ConfigurationData cd = serializer.Deserialize
-                <ConfigurationData>(command.Args[0]);
+                <ConfigurationData>(e.Args[0]);
             this.outputDir = cd.outputDir;
             this.logName = cd.sourceName;
             this.sourceName = cd.sourceName;
@@ -60,7 +53,7 @@ namespace kinGUI
 
         public void Removehandler(string handler)
         {
-            string message;
+            //string message;
             CommandRecievedEventArgs command = new CommandRecievedEventArgs(
                 (int)CommandEnum.CloseCommand, new string[] { handler }, string.Empty);
             var serializer = new JavaScriptSerializer();
@@ -73,6 +66,14 @@ namespace kinGUI
             //ConfigurationData cd = serializer.Deserialize
             //    <ConfigurationData>(command.Args[0]);
             //this.client.sendMessage
+        }
+
+        public void OnCommandRecieved(object sender, CommandRecievedEventArgs e)
+        {
+            if (e.CommandID == (int)CommandEnum.GetConfigCommand)
+            {
+                this.SetSettings(e);
+            }
         }
 
         public string OutputDir

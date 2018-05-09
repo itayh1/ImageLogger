@@ -5,22 +5,41 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
+using System.IO;
+using System.Web.Script.Serialization;
 
 namespace kinGUI
 {
     class VClient
     {
-        private Socket sender;
+        private static VClient singletonClient;
 
-        public VClient(string ip, int port)
+        private TcpClient client;
+
+        public event EventHandler<CommandRecievedEventArgs> OnCommandRecieved;
+
+        private readonly string ip = "127.0.0.1";
+        private readonly int port = 8888;
+
+        public static VClient Instance
+        {
+            get
+            {
+                if (singletonClient == null)
+                {
+                    singletonClient = new VClient();
+                }
+                return singletonClient;
+            }
+        }
+
+        private VClient()
         {
             try
             {
-                //IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
-                IPAddress ipAddress = IPAddress.Parse(ip);//ipHostInfo.AddressList[0];
-                IPEndPoint remoteEP = new IPEndPoint(ipAddress, port);
-                this.sender = new Socket(ipAddress.AddressFamily,
-                    SocketType.Stream, ProtocolType.Tcp);
+                IPEndPoint ep = new IPEndPoint(IPAddress.Parse(ip), port);
+                this.client = new TcpClient();
+                this.client.Connect(ep);                
             }
             catch (Exception e)
             {
@@ -30,22 +49,52 @@ namespace kinGUI
 
         public void sendMessage(string msg)
         {
-            byte[] message = Encoding.ASCII.GetBytes(msg);
-            sender.Send(message);
+            new Task(() =>
+            {
+                using (NetworkStream stream = client.GetStream())
+                using (StreamWriter writer = new StreamWriter(stream))
+                {
+                    //string args = JsonConvert.SerializeObject(e);
+                    writer.Write(msg);
+                }
+            }).Start();
         }
 
 
-        public string getMessage()
+        //public string getMessage()
+        //{
+        //    byte[] bytes = new byte[1024];
+        //    int bytesRec = client.Receive(bytes);
+        //    return Encoding.ASCII.GetString(bytes, 0, bytesRec);
+        //}
+
+        public void ReadMesagge()
         {
-            byte[] bytes = new byte[1024];
-            int bytesRec = sender.Receive(bytes);
-            return Encoding.ASCII.GetString(bytes, 0, bytesRec);
+            new Task(() =>
+            {
+                while (client.Connected)
+                {
+                    using (NetworkStream stream = this.client.GetStream())
+                    using (StreamReader reader = new StreamReader(stream))
+                    {
+                        string args = "";// = reader.ReadLine();
+                        while (reader.Peek() > 0)
+                        {
+                            args = args + reader.Read();
+                        }
+                        var serializer = new JavaScriptSerializer();
+                        CommandRecievedEventArgs e = serializer.Deserialize<CommandRecievedEventArgs>(args);
+
+                        OnCommandRecieved?.Invoke(this, e);
+                    }
+                }
+            }).Start();
         }
 
         public void close()
         {
-            this.sender.Shutdown(SocketShutdown.Both);
-            this.sender.Close();
+            //this.client.Shutdown(SocketShutdown.Both);
+            this.client.Close();
         }
     }
 }
