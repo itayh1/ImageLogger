@@ -15,7 +15,7 @@ namespace ImageService.Modal
     {        
         private string outputFolder { get; set; }
         private int thumbSize { get; set; }
-
+      
 
         /*
          * Construct ImageServiceMidal by destenation path and size of thumbnail
@@ -24,6 +24,12 @@ namespace ImageService.Modal
         {
             this.outputFolder = target;
             this.thumbSize = thumbnail;
+        }
+
+
+        public void OnCommandRecieved(object sender, CommandRecievedEventArgs e)
+        {
+            
         }
 
 

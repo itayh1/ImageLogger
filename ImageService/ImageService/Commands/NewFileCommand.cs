@@ -1,5 +1,4 @@
-﻿using ImageService.Infrastructure;
-using ImageService.Modal;
+﻿using ImageService.Modal;
 using System;
 using System.Collections.Generic;
 using System.Linq;

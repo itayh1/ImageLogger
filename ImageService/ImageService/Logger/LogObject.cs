@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ImageService.Infrastructure.Enums
+namespace ImageService
 {
-    public enum CommandEnum : int
+    public class LogObject
     {
-        NewFileCommand,
-        CloseCommand
+        public string Type { get; set; }
+        public string Message { get; set; }
     }
 }
