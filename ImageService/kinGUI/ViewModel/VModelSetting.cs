@@ -10,12 +10,12 @@ using Microsoft.Practices.Prism.Commands;
 
 namespace kinGUI
 {
-    class VModelSetting : IVModelSetting
+    class VModelSetting : INotifyPropertyChanged
     {
         ModelSetting model;
 
-        private ICommand RemoveCommand { get; set; }
-
+        public ICommand RemoveCommand { get; private set; }
+        private string selectedItem;
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged(string name)
@@ -29,7 +29,8 @@ namespace kinGUI
             Console.WriteLine("Ctor VModelSetting");
             this.model = new ModelSetting();
 
-            this.RemoveCommand = new DelegateCommand(this.Submit, this.CanSubmit);
+            this.RemoveCommand = new DelegateCommand<object>(this.Submit, this.CanSubmit);
+            this.PropertyChanged += RemovePropertyChanged;
 
         }
         public string OutputDir
@@ -63,19 +64,30 @@ namespace kinGUI
 
         public string SelectedItem
         {
-            get; set;
+            get { return this.selectedItem; }
+            set { this.selectedItem = value;
+                OnPropertyChanged("SelectedItem");
+            }
+            //add property changed
         }
 
-        public void Submit()
+        private void RemovePropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            var command = this.RemoveCommand as DelegateCommand<object>;
+            command.RaiseCanExecuteChanged();
+        }
+
+        public void Submit(object o)
         {
             this.model.Removehandler(this.SelectedItem);
         }
 
-        public bool CanSubmit()
+        public bool CanSubmit(object o)
         {
-            if (this.SelectedItem != null)
-                return true;
-            return false;
+            Console.WriteLine("CanSubmit");
+            if (string.IsNullOrEmpty(this.SelectedItem))
+                return false;
+            return true;
         }
     }
 }

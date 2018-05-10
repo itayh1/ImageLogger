@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Practices.Prism.Commands;
 
 namespace kinGUI
 {
@@ -21,14 +22,14 @@ namespace kinGUI
     public partial class MainWindow : Window
     {
         // private VClient client;
-        private IVModelSetting viewModel;
+        //private VModelSetting viewModel;
 
         public MainWindow()
         {
             InitializeComponent();
             //this.client = new VClient("127.0.0.1", 5555);
-            this.viewModel = new VModelSetting();
-            this.DataContext = this.viewModel;
+          //  this.viewModel = new VModelSetting();
+            //this.DataContext = this.viewModel;
             //((Vie this.DataContex
         }
 
