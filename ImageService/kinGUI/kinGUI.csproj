@@ -74,7 +74,7 @@
       <DependentUpon>SettingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\VModelSetting.cs" />
-    <Compile Include="VClient.cs" />
+    <Compile Include="ClientConn.cs" />
     <Compile Include="ViewModel\VModelLog.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

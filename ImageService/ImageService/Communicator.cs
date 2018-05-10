@@ -12,7 +12,7 @@ namespace ImageService
 {
     public class Communicator
     {
-        private int server_port = 5555;
+        private readonly int server_port = 8888;
         private TcpListener listener;
         //private List<TcpListener> clients;
         private LoggingService loggingService;

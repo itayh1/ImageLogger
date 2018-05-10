@@ -11,7 +11,7 @@ namespace kinGUI
 {
     class ModelSetting : INotifyPropertyChanged
     {
-        private VClient client;
+        private ClientConn client;
         private string outputDir;
         private string logName;
         private string sourceName;
@@ -52,19 +52,11 @@ namespace kinGUI
 
         public void Removehandler(string handler)
         {
-            //string message;
             CommandRecievedEventArgs command = new CommandRecievedEventArgs(
                 (int)CommandEnum.CloseCommand, new string[] { handler }, string.Empty);
             var serializer = new JavaScriptSerializer();
             var serializedData = serializer.Serialize(command);
-            //send request for appconfig
             this.client.sendMessage(serializedData.ToString());
-            
-            //message = this.client.getMessage();
-            //command = serializer.Deserialize<CommandRecievedEventArgs>(message);
-            //ConfigurationData cd = serializer.Deserialize
-            //    <ConfigurationData>(command.Args[0]);
-            //this.client.sendMessage
         }
 
         public void OnCommandRecieved(object sender, CommandRecievedEventArgs e)
@@ -72,6 +64,10 @@ namespace kinGUI
             if (e.CommandID == (int)CommandEnum.GetConfigCommand)
             {
                 this.SetSettings(e);
+            }
+            else if (e.CommandID == (int)CommandEnum.CloseCommand)
+            {
+                this.handlers.Remove(e.Args[0]);
             }
         }
 

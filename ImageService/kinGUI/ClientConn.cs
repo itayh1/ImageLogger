@@ -10,9 +10,9 @@ using System.Web.Script.Serialization;
 
 namespace kinGUI
 {
-    class VClient
+    class ClientConn
     {
-        private static VClient singletonClient;
+        private static ClientConn singletonClient;
 
         private TcpClient client;
 
@@ -21,19 +21,19 @@ namespace kinGUI
         private readonly string ip = "127.0.0.1";
         private readonly int port = 8888;
 
-        public static VClient Instance
+        public static ClientConn Instance
         {
             get
             {
                 if (singletonClient == null)
                 {
-                    singletonClient = new VClient();
+                    singletonClient = new ClientConn();
                 }
                 return singletonClient;
             }
         }
 
-        private VClient()
+        private ClientConn()
         {
             try
             {
@@ -60,14 +60,6 @@ namespace kinGUI
             }).Start();
         }
 
-
-        //public string getMessage()
-        //{
-        //    byte[] bytes = new byte[1024];
-        //    int bytesRec = client.Receive(bytes);
-        //    return Encoding.ASCII.GetString(bytes, 0, bytesRec);
-        //}
-
         public void ReadMesagge()
         {
             new Task(() =>
@@ -77,7 +69,7 @@ namespace kinGUI
                     using (NetworkStream stream = this.client.GetStream())
                     using (StreamReader reader = new StreamReader(stream))
                     {
-                        string args = "";// = reader.ReadLine();
+                        string args = "";
                         while (reader.Peek() > 0)
                         {
                             args = args + reader.Read();

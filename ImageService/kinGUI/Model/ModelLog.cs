@@ -10,7 +10,7 @@ namespace kinGUI
 {
     class ModelLog : INotifyPropertyChanged
     {
-        private VClient client;
+        private ClientConn client;
         private List<LogObject> logs;
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -31,11 +31,7 @@ namespace kinGUI
 
         public void OnCommandRecieved(object sender, CommandRecievedEventArgs e)
         {
-            if (e.CommandID == (int)CommandEnum.GetConfigCommand)
-            {
-                
-            }
-            else if (e.CommandID == (int)CommandEnum.GetListLogCommand)
+            if (e.CommandID == (int)CommandEnum.GetListLogCommand)
             {
                 var serializer = new JavaScriptSerializer();
                 List<LogObject> temp = serializer.Deserialize<List<LogObject>>(e.Args[0]);
@@ -44,10 +40,6 @@ namespace kinGUI
             else if (e.CommandID == (int)CommandEnum.LogCommand)
             {
                 this.logs.Add(new LogObject() { Type = e.Args[0], Message = e.Args[1] });
-            }
-            else if(e.CommandID == (int)CommandEnum.CloseCommand)
-            {
-
             }
         }
 
