@@ -10,9 +10,7 @@
     <Grid>
         <TabControl>
             <TabItem Header="Settings">
-                
-                    <controls:SettingView/>
-                
+                <controls:SettingView/>
             </TabItem>
             <TabItem Header="Logs" >
                 <controls:LogView/>

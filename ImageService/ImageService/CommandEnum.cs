@@ -11,6 +11,7 @@ namespace ImageService
         NewFileCommand,
         GetConfigCommand,
         LogCommand,
-        CloseCommand
+        CloseCommand,
+        GetListLogCommand
     }
 }

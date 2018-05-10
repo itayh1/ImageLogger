@@ -22,7 +22,6 @@ namespace kinGUI
         public ModelSetting()
         {
             Console.WriteLine("Ctor Model");
-            Controler controler = new Controler();
             //this.client = VClient.Instance;
             //this.client.OnCommandRecieved += this.OnCommandRecieved;
 
