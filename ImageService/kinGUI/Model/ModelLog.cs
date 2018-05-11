@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
+using System.Web.Script.Serialization;
 
 namespace kinGUI
 {
@@ -15,15 +16,39 @@ namespace kinGUI
 
         public ModelLog()
         {
-           // this.client = VClient.Instance;
+            // this.client = VClient.Instance;
+            //this.client.OnCommandRecieved += this.OnCommandRecieved;
             this.logs = new List<LogObject>();
             logs.Add(new LogObject() { Type = "Info", Message = "Hello world!" });
-            logs.Add(new LogObject() { Type = "Error", Message = "Hello world2!" });
+            logs.Add(new LogObject() { Type = "fail", Message = "Hello world2!" });
+            logs.Add(new LogObject() { Type = "warning", Message = "Hello world2!" });
         }
 
         public void NotifyPropertyChanged(string propName)
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+        }
+
+        public void OnCommandRecieved(object sender, CommandRecievedEventArgs e)
+        {
+            if (e.CommandID == (int)CommandEnum.GetConfigCommand)
+            {
+                
+            }
+            else if (e.CommandID == (int)CommandEnum.GetListLogCommand)
+            {
+                var serializer = new JavaScriptSerializer();
+                List<LogObject> temp = serializer.Deserialize<List<LogObject>>(e.Args[0]);
+                this.logs.AddRange(temp);
+            }
+            else if (e.CommandID == (int)CommandEnum.LogCommand)
+            {
+                this.logs.Add(new LogObject() { Type = e.Args[0], Message = e.Args[1] });
+            }
+            else if(e.CommandID == (int)CommandEnum.CloseCommand)
+            {
+
+            }
         }
 
         public List<LogObject> Logs

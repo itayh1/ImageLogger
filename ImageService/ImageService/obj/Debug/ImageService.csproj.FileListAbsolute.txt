@@ -27,3 +27,4 @@ C:\Users\Omer Zucker\Source\Repos\ImageLogger\ImageService\ImageService\obj\Debu
 C:\Users\Omer Zucker\Source\Repos\ImageLogger\ImageService\ImageService\obj\Debug\ImageService.csproj.CoreCompileInputs.cache
 C:\Users\Omer Zucker\Source\Repos\ImageLogger\ImageService\ImageService\obj\Debug\ImageService.exe
 C:\Users\Omer Zucker\Source\Repos\ImageLogger\ImageService\ImageService\obj\Debug\ImageService.pdb
+C:\Users\Itay\Source\Repos\ImageLogger\ImageService\ImageService\obj\Debug\ImageService.csprojResolveAssemblyReference.cache

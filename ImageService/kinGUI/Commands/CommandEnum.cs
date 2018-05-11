@@ -11,6 +11,7 @@ namespace kinGUI
         NewFileCommand,
         GetConfigCommand,
         LogCommand,
-        CloseCommand
+        CloseCommand,
+        GetListLogCommand //get the list of logs that have been until now
     }
 }
