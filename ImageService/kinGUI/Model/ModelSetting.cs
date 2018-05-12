@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Web.Script.Serialization;
+using Microsoft.Practices.Prism.Commands;
 
 namespace kinGUI
 {

@@ -28,7 +28,10 @@ namespace kinGUI
         {
             Console.WriteLine("Ctor VModelSetting");
             this.model = new ModelSetting();
-
+            this.model.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
+            {
+                this.OnPropertyChanged(e.PropertyName);
+            };
             this.RemoveCommand = new DelegateCommand<object>(this.Submit, this.CanSubmit);
             this.PropertyChanged += RemovePropertyChanged;
 

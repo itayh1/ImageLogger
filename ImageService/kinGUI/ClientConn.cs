@@ -18,7 +18,7 @@ namespace kinGUI
 
         public event EventHandler<CommandRecievedEventArgs> OnCommandRecieved;
 
-        private readonly string ip = "127.0.0.1";
+        private readonly string ip = "192.168.5.180";
         private readonly int port = 8888;
 
         public static ClientConn Instance
@@ -39,7 +39,8 @@ namespace kinGUI
             {
                 IPEndPoint ep = new IPEndPoint(IPAddress.Parse(ip), port);
                 this.client = new TcpClient();
-                this.client.Connect(ep);                
+                this.client.Connect(ep);
+                this.ReadMesagge();
             }
             catch (Exception e)
             {
@@ -64,22 +65,26 @@ namespace kinGUI
         {
             new Task(() =>
             {
+                string arg;
+                //byte[] message = new byte[4096];
+                //int bytesRead;
+                NetworkStream stream = this.client.GetStream();
+                StreamReader reader = new StreamReader(stream);
+
                 while (client.Connected)
                 {
-                    using (NetworkStream stream = this.client.GetStream())
-                    using (StreamReader reader = new StreamReader(stream))
-                    {
-                        string args = "";
-                        while (reader.Peek() > 0)
-                        {
-                            args = args + reader.Read();
-                        }
-                        var serializer = new JavaScriptSerializer();
-                        CommandRecievedEventArgs e = serializer.Deserialize<CommandRecievedEventArgs>(args);
+                    //bytesRead = stream.Read(message, 0, 4096);
+                    //arg = Encoding.ASCII.GetString(message, 0, 4096);
+                    arg = reader.ReadLine();
+                  //  stream.Flush();
 
-                        OnCommandRecieved?.Invoke(this, e);
-                    }
+                    var serializer = new JavaScriptSerializer();
+                    CommandRecievedEventArgs e = serializer.Deserialize<CommandRecievedEventArgs>(arg);
+
+                    OnCommandRecieved?.Invoke(this, e);
                 }
+
+
             }).Start();
         }
 

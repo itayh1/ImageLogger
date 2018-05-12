@@ -12,6 +12,7 @@ namespace kinGUI
         public string[] Args { get; set; }
         public string RequestDirPath { get; set; }  // The Request Directory
 
+        public CommandRecievedEventArgs() { }
         public CommandRecievedEventArgs(int id, string[] args, string path)
         {
             CommandID = id;

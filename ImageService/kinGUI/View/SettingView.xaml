@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:kinGUI"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <StackPanel Grid.Row="6" Grid.ColumnSpan="2" Orientation="Vertical">
+    <StackPanel>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -22,13 +22,13 @@
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Row="1"  Grid.ColumnSpan="2" Padding="3" Text="Settings" TextAlignment="Center" FontWeight="Bold" Foreground="Blue" FontSize="20"></TextBlock>
             <TextBlock Grid.Row="2" Grid.Column="0" Padding="3" Margin="3" FontWeight="Bold" FontSize="14" >Output Directory:</TextBlock>
-            <TextBlock Grid.Row="2" Grid.Column="1" Padding="3" Margin="3" Text="{Binding OutputDir}"></TextBlock>
+            <TextBlock Grid.Row="2" Grid.Column="1" Padding="3" Margin="3" Text="{Binding OutputDir, Mode=TwoWay}"></TextBlock>
             <TextBlock Grid.Row="3" Grid.Column="0" Padding="3" Margin="3" FontWeight="Bold" FontSize="14">Source Name:</TextBlock>
-            <TextBlock Grid.Row="3" Grid.Column="1" Padding="3" Margin="3" Text="{Binding SourceName}"></TextBlock>
+            <TextBlock Grid.Row="3" Grid.Column="1" Padding="3" Margin="3" Text="{Binding SourceName, Mode=TwoWay}"></TextBlock>
             <TextBlock Grid.Row="4" Grid.Column="0" Padding="3" Margin="3" FontWeight="Bold" FontSize="14">Log Name:</TextBlock>
-            <TextBlock Grid.Row="4" Grid.Column="1" Padding="3" Margin="3" Text="{Binding LogName}"></TextBlock>
+            <TextBlock Grid.Row="4" Grid.Column="1" Padding="3" Margin="3" Text="{Binding LogName, Mode=TwoWay}"></TextBlock>
             <TextBlock Grid.Row="5" Grid.Column="0" Padding="3" Margin="3" FontWeight="Bold" FontSize="14">Thumbnail Size:</TextBlock>
-            <TextBlock Grid.Row="5" Grid.Column="1" Padding="3" Margin="3" Text="{Binding ThumbnailSize}"></TextBlock>
+            <TextBlock Grid.Row="5" Grid.Column="1" Padding="3" Margin="3" Text="{Binding ThumbnailSize, Mode=TwoWay}"></TextBlock>
         </Grid>
         <Button Command="{Binding RemoveCommand}">Remove</Button>
         <ListBox Margin="10" ItemsSource="{Binding Handlers}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}">

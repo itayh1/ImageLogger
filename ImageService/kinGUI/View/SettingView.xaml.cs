@@ -23,7 +23,6 @@ namespace kinGUI
         public SettingView()
         {
             InitializeComponent();
-            //VModelSetting vmSetting = new VModelSetting();
             this.DataContext = new VModelSetting();
         }
     }
