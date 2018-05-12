@@ -16,8 +16,8 @@ namespace kinGUI
 
         public ModelLog()
         {
-            // this.client = VClient.Instance;
-            //this.client.OnCommandRecieved += this.OnCommandRecieved;
+            this.client = ClientConn.Instance;
+            this.client.OnCommandRecieved += this.OnCommandRecieved;
             this.logs = new List<LogObject>();
             logs.Add(new LogObject() { Type = "Info", Message = "Hello world!" });
             logs.Add(new LogObject() { Type = "fail", Message = "Hello world2!" });

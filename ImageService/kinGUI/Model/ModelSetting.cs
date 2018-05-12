@@ -22,8 +22,8 @@ namespace kinGUI
         public ModelSetting()
         {
             Console.WriteLine("Ctor Model");
-            //this.client = VClient.Instance;
-            //this.client.OnCommandRecieved += this.OnCommandRecieved;
+            this.client = ClientConn.Instance;
+            this.client.OnCommandRecieved += this.OnCommandRecieved;
 
             this.outputDir = "asd";
             this.sourceName = "asfasgfs";

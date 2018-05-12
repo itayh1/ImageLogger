@@ -39,7 +39,7 @@ namespace ImageService
             this.listener.Start();
             Console.WriteLine("Waiting for connections...");
 
-            Task task = new Task(() => {
+           // Task task = new Task(() => {
 
                 TcpClient client = this.listener.AcceptTcpClient();
                 Console.WriteLine("New client connection");
@@ -62,8 +62,8 @@ namespace ImageService
                 }
 
                 Console.WriteLine("Server stopped");
-            });
-            task.Start();
+          //  });
+          //  task.Start();
         }
 
         public void HandleClient(TcpClient client)
@@ -85,15 +85,15 @@ namespace ImageService
 
         public void sendMessage(string msg, TcpClient client)
         {
-            new Task(() =>
-            {
+            //new Task(() =>
+            //{
                 using (NetworkStream stream = client.GetStream())
                 using (StreamWriter writer = new StreamWriter(stream))
                 {
                     //string args = JsonConvert.SerializeObject(e);
                     writer.Write(msg);
                 }
-            }).Start();
+            //}).Start();
         }
 
 
