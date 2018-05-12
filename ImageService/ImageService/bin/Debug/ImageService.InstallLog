@@ -221,3 +221,16 @@ Affected parameters are:
 Removing EventLog source MyNewService.
 Service MyNewService is being removed from the system...
 Service MyNewService was successfully removed from the system.
+Installing assembly 'C:\Users\Omer Zucker\source\repos\ImageLogger\ImageService\ImageService\bin\Debug\ImageService.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Users\Omer Zucker\source\repos\ImageLogger\ImageService\ImageService\bin\Debug\ImageService.InstallLog
+   assemblypath = C:\Users\Omer Zucker\source\repos\ImageLogger\ImageService\ImageService\bin\Debug\ImageService.exe
+Installing service MyNewService...
+Service MyNewService has been successfully installed.
+Creating EventLog source MyNewService in log Application...
+Committing assembly 'C:\Users\Omer Zucker\source\repos\ImageLogger\ImageService\ImageService\bin\Debug\ImageService.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Users\Omer Zucker\source\repos\ImageLogger\ImageService\ImageService\bin\Debug\ImageService.InstallLog
+   assemblypath = C:\Users\Omer Zucker\source\repos\ImageLogger\ImageService\ImageService\bin\Debug\ImageService.exe

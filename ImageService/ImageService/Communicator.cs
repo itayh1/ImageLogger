@@ -22,7 +22,7 @@ namespace ImageService
 
         public Communicator(ConfigurationData configData, LoggingService loggingS)
         {
-            IPEndPoint ep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), this.server_port);
+            IPEndPoint ep = new IPEndPoint(IPAddress.Parse("192.168.5.180"), this.server_port);
             this.listener = new TcpListener(ep);
             this.loggingService = loggingS;
             this.data = new ConfigurationData();
@@ -43,6 +43,9 @@ namespace ImageService
 
                 TcpClient client = this.listener.AcceptTcpClient();
                 Console.WriteLine("New client connection");
+                this.loggingService.Log(string.Format("Client with socket {0} connected",client.ToString()), Logging.Modal.MessageTypeEnum.INFO);
+                
+                // serialize command for settings
                 var serializer = new JavaScriptSerializer();
                 var serializedConfig = serializer.Serialize(this.data);
                 CommandRecievedEventArgs command = new CommandRecievedEventArgs((int)CommandEnum.GetConfigCommand,
@@ -50,10 +53,16 @@ namespace ImageService
                 
                 // send appconfig
                 var serializedCmd = serializer.Serialize(command);
-                this.sendMessage(serializedCmd.ToString(), client);
-                // send logs
+                this.sendMessage(serializedCmd, client);
+                
+                // serialize command for logs
                 var serializedLogs = serializer.Serialize(this.loggingService.Logs);
-                this.sendMessage(serializedLogs.ToString(), client);
+                command = new CommandRecievedEventArgs((int)CommandEnum.GetListLogCommand, 
+                    new string[] { serializedLogs }, string.Empty);
+
+                // send logs
+                serializedCmd = serializer.Serialize(command);
+                this.sendMessage(serializedLogs, client);
                 try
                 {
                     HandleClient(client);
@@ -87,12 +96,17 @@ namespace ImageService
         {
             //new Task(() =>
             //{
-                using (NetworkStream stream = client.GetStream())
-                using (StreamWriter writer = new StreamWriter(stream))
-                {
-                    //string args = JsonConvert.SerializeObject(e);
-                    writer.Write(msg);
-                }
+            NetworkStream stream = client.GetStream();
+            StreamWriter writer = new StreamWriter(stream)
+            {
+                AutoFlush = true
+            };
+ 
+
+            writer.WriteLine(msg);
+                
+                
+                
             //}).Start();
         }
 

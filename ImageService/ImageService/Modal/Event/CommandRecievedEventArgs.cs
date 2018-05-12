@@ -18,5 +18,10 @@ namespace ImageService
             Args = args;
             RequestDirPath = path;
         }
+
+        public CommandRecievedEventArgs()
+        {
+
+        }
     }
 }
