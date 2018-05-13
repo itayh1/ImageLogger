@@ -50,44 +50,49 @@ namespace kinGUI
 
         public void sendMessage(string msg)
         {
-            new Task(() =>
-            {
-                NetworkStream stream = client.GetStream();
-                StreamWriter writer = new StreamWriter(stream);
-                {
-                    //string args = JsonConvert.SerializeObject(e);
-                    writer.WriteLine(msg);
-                }
-            }).Start();
+            NetworkStream stream = client.GetStream();
+            StreamWriter writer = new StreamWriter(stream);
+            writer.WriteLine(msg);
         }
 
         public void ReadMesagge()
         {
             new Task(() =>
             {
-                string arg;
-                NetworkStream stream = this.client.GetStream();
-                StreamReader reader = new StreamReader(stream);
-
-                while (client.Connected)
+                try
                 {
-                  
-                    arg = reader.ReadLine();
-                  
+                    string arg;
+                    NetworkStream stream = this.client.GetStream();
+                    StreamReader reader = new StreamReader(stream);
 
-                    var serializer = new JavaScriptSerializer();
-                    CommandRecievedEventArgs e = serializer.Deserialize<CommandRecievedEventArgs>(arg);
-
-                    OnCommandRecieved?.Invoke(this, e);
+                    while (client.Connected)
+                    {
+                        arg = reader.ReadLine();
+                        var serializer = new JavaScriptSerializer();
+                        CommandRecievedEventArgs e = serializer.Deserialize<CommandRecievedEventArgs>(arg);
+                        //if (e.CommandID == (int)CommandEnum.ExitCommand)
+                        //{
+                        //    // Client want to exit.
+                        //    break;
+                        //}
+                        OnCommandRecieved?.Invoke(this, e);
+                    }
                 }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                finally
+                {
+                    client.Close();
 
-
+                }
+               
             }).Start();
         }
 
         public void close()
         {
-            //this.client.Shutdown(SocketShutdown.Both);
             this.client.Close();
         }
     }

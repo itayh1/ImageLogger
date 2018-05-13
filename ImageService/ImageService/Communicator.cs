@@ -35,66 +35,65 @@ namespace ImageService
 
         public void Start()
         {
-
             this.listener.Start();
             Console.WriteLine("Waiting for connections...");
 
-           // Task task = new Task(() => {
-
-                TcpClient client = this.listener.AcceptTcpClient();
-                Console.WriteLine("New client connection");
-                this.loggingService.Log(string.Format("Client with socket {0} connected",client.ToString()), Logging.Modal.MessageTypeEnum.INFO);
-                
-                // serialize command for settings
-                var serializer = new JavaScriptSerializer();
-                var serializedConfig = serializer.Serialize(this.data);
-                CommandRecievedEventArgs command = new CommandRecievedEventArgs((int)CommandEnum.GetConfigCommand,
-                    new string[] { serializedConfig }, string.Empty);
-                
-                // send appconfig
-                var serializedCmd = serializer.Serialize(command);
-                this.sendMessage(serializedCmd, client);
-                
-                // serialize command for logs
-                var serializedLogs = serializer.Serialize(this.loggingService.Logs);
-                command = new CommandRecievedEventArgs((int)CommandEnum.GetListLogCommand, 
-                    new string[] { serializedLogs }, string.Empty);
-
-                // send logs
-                serializedCmd = serializer.Serialize(command);
-                this.sendMessage(serializedCmd, client);
+            while (true)
+            {
                 try
                 {
+                    TcpClient client = this.listener.AcceptTcpClient();
+                    Console.WriteLine("New client connection");
+                    this.loggingService.Log(string.Format("Client with socket {0} connected", client.ToString()), Logging.Modal.MessageTypeEnum.INFO);
                     HandleClient(client);
-                } catch (Exception e) {
-                    Console.Write(e.Message);
                 }
-
-                Console.WriteLine("Server stopped");
-          //  });
-          //  task.Start();
+                catch (Exception e)
+                {
+                    Console.Write(e.Message);
+                    break;
+                }
+            }
+            Console.WriteLine("Server stopped");
         }
 
         public void HandleClient(TcpClient client)
         {
+
+
+         //Task task = new Task(() => {
+
+            // serialize command for settings
+            var serializer = new JavaScriptSerializer();
+            var serializedConfig = serializer.Serialize(this.data);
+            CommandRecievedEventArgs command = new CommandRecievedEventArgs((int)CommandEnum.GetConfigCommand,
+                new string[] { serializedConfig }, string.Empty);
+
+            // send appconfig
+            var serializedCmd = serializer.Serialize(command);
+            this.sendMessage(serializedCmd, client);
+
+            // serialize command for logs
+            var serializedLogs = serializer.Serialize(this.loggingService.Logs);
+            command = new CommandRecievedEventArgs((int)CommandEnum.GetListLogCommand,
+                new string[] { serializedLogs }, string.Empty);
+
+            // send logs
+            serializedCmd = serializer.Serialize(command);
+            this.sendMessage(serializedCmd, client);
+            
             bool running = true;
             NetworkStream stream = client.GetStream();
             StreamReader reader = new StreamReader(stream);
             string msg = string.Empty;
+
             while (running)
             {
                 try
                 {
                     msg = reader.ReadLine();
-
-                    try
-                    {
-                        Console.WriteLine("msg: {0}", msg);
-                        CommandRecievedEventArgs e = new 
-                            JavaScriptSerializer().Deserialize<CommandRecievedEventArgs>(msg);
-                        OnCommandRecieved?.Invoke(this, e);
-                    }
-                    catch { }
+                    Console.WriteLine("msg: {0}", msg);
+                    CommandRecievedEventArgs e = new JavaScriptSerializer().Deserialize<CommandRecievedEventArgs>(msg);
+                    OnCommandRecieved?.Invoke(this, e);
                 }
                 catch (Exception ex)
                 {
@@ -103,24 +102,18 @@ namespace ImageService
                 }
             }
             client.Close();
+
+            //  });
+            //  task.Start();
         }
 
         public void sendMessage(string msg, TcpClient client)
         {
-            //new Task(() =>
-            //{
             NetworkStream stream = client.GetStream();
-            StreamWriter writer = new StreamWriter(stream)
-            {
+            StreamWriter writer = new StreamWriter(stream) {
                 AutoFlush = true
             };
- 
-
             writer.WriteLine(msg);
-                
-                
-                
-            //}).Start();
         }
 
 
