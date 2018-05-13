@@ -18,7 +18,6 @@ namespace kinGUI
 
         public event EventHandler<CommandRecievedEventArgs> OnCommandRecieved;
 
-        //private readonly string ip = "192.168.5.180";
         private readonly string ip = "127.0.0.1";
         private readonly int port = 8888;
 
@@ -53,11 +52,11 @@ namespace kinGUI
         {
             new Task(() =>
             {
-                using (NetworkStream stream = client.GetStream())
-                using (StreamWriter writer = new StreamWriter(stream))
+                NetworkStream stream = client.GetStream();
+                StreamWriter writer = new StreamWriter(stream);
                 {
                     //string args = JsonConvert.SerializeObject(e);
-                    writer.Write(msg);
+                    writer.WriteLine(msg);
                 }
             }).Start();
         }
