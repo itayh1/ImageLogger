@@ -82,6 +82,7 @@ namespace kinGUI
 
         public void Submit(object o)
         {
+            Console.WriteLine("Submit");
             this.model.Removehandler(this.SelectedItem);
         }
 

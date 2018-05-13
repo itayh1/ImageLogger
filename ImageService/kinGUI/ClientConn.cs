@@ -53,11 +53,11 @@ namespace kinGUI
         {
             new Task(() =>
             {
-                using (NetworkStream stream = client.GetStream())
-                using (StreamWriter writer = new StreamWriter(stream))
+                NetworkStream stream = client.GetStream();
+                StreamWriter writer = new StreamWriter(stream);
                 {
                     //string args = JsonConvert.SerializeObject(e);
-                    writer.Write(msg);
+                    writer.WriteLine(msg);
                 }
             }).Start();
         }
@@ -67,17 +67,14 @@ namespace kinGUI
             new Task(() =>
             {
                 string arg;
-                //byte[] message = new byte[4096];
-                //int bytesRead;
                 NetworkStream stream = this.client.GetStream();
                 StreamReader reader = new StreamReader(stream);
 
                 while (client.Connected)
                 {
-                    //bytesRead = stream.Read(message, 0, 4096);
-                    //arg = Encoding.ASCII.GetString(message, 0, 4096);
+                  
                     arg = reader.ReadLine();
-                  //  stream.Flush();
+                  
 
                     var serializer = new JavaScriptSerializer();
                     CommandRecievedEventArgs e = serializer.Deserialize<CommandRecievedEventArgs>(arg);

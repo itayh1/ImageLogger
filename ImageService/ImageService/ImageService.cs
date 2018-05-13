@@ -67,15 +67,6 @@ namespace ImageService
                 configData.handlers = configData.handlers.Take<string>(configData.handlers.Length - 1).ToArray<string>();
             }
             
-            if (args.Count() > 0)
-            {
-                configData.sourceName = args[0];
-            }
-            if (args.Count() > 1)
-            {
-                configData.logName = args[1];
-            }
-
             // create new eventLog by src
             eventLog1 = new EventLog();
             if (!EventLog.SourceExists(configData.sourceName))

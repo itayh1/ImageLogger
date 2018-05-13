@@ -25,14 +25,6 @@ namespace kinGUI
             Console.WriteLine("Ctor Model");
             this.client = ClientConn.Instance;
             this.client.OnCommandRecieved += this.OnCommandRecieved;
-
-            this.outputDir = "asd";
-            this.sourceName = "asfasgfs";
-            this.thumbnailSize = 324235;
-            this.handlers = new ObservableCollection<string>();
-            this.handlers.Add("hello");
-            this.handlers.Add("hellosdas");
-
         }
         public void NotifyPropertyChanged(string propName)
         {
@@ -45,7 +37,7 @@ namespace kinGUI
             ConfigurationData cd = serializer.Deserialize
                 <ConfigurationData>(e.Args[0]);
             this.outputDir = cd.outputDir;
-            this.logName = cd.sourceName;
+            this.logName = cd.logName;
             this.sourceName = cd.sourceName;
             this.thumbnailSize = cd.thumbnailSize;
             this.handlers = new ObservableCollection<string>(cd.handlers);
@@ -57,7 +49,7 @@ namespace kinGUI
                 (int)CommandEnum.CloseCommand, new string[] { handler }, string.Empty);
             var serializer = new JavaScriptSerializer();
             var serializedData = serializer.Serialize(command);
-            this.client.sendMessage(serializedData.ToString());
+            this.client.sendMessage(serializedData);
         }
 
         public void OnCommandRecieved(object sender, CommandRecievedEventArgs e)
