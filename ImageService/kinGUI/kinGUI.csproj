@@ -35,7 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Commands">
-      <HintPath>bin\Commands.dll</HintPath>
+      <HintPath>Properties\Commands.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

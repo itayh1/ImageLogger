@@ -22,7 +22,7 @@ namespace ImageService
 
         public Communicator(ConfigurationData configData, LoggingService loggingS)
         {
-            IPEndPoint ep = new IPEndPoint(IPAddress.Parse("192.168.5.180"), this.server_port);
+            IPEndPoint ep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), this.server_port);
             this.listener = new TcpListener(ep);
             this.loggingService = loggingS;
             this.data = new ConfigurationData();
@@ -62,7 +62,7 @@ namespace ImageService
 
                 // send logs
                 serializedCmd = serializer.Serialize(command);
-                this.sendMessage(serializedLogs, client);
+                this.sendMessage(serializedCmd, client);
                 try
                 {
                     HandleClient(client);
@@ -78,18 +78,31 @@ namespace ImageService
         public void HandleClient(TcpClient client)
         {
             bool running = true;
+            NetworkStream stream = client.GetStream();
+            StreamReader reader = new StreamReader(stream);
+            string msg = string.Empty;
             while (running)
             {
-                Byte[] data = new Byte[1024];
-                string msg = string.Empty;
-                NetworkStream stream = client.GetStream();
-                Int32 bytes = stream.Read(data, 0, data.Length);
-                msg = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
-                Console.WriteLine("msg: {0}",msg);
-                CommandRecievedEventArgs e = (CommandRecievedEventArgs) new JavaScriptSerializer().DeserializeObject(msg);
-                OnCommandRecieved?.Invoke(this, e);
+                try
+                {
+                    msg = reader.ReadLine();
 
+                    try
+                    {
+                        Console.WriteLine("msg: {0}", msg);
+                        CommandRecievedEventArgs e = new 
+                            JavaScriptSerializer().Deserialize<CommandRecievedEventArgs>(msg);
+                        OnCommandRecieved?.Invoke(this, e);
+                    }
+                    catch { }
+                }
+                catch (Exception ex)
+                {
+                    running = false;
+                    Console.WriteLine(ex.Message);
+                }
             }
+            client.Close();
         }
 
         public void sendMessage(string msg, TcpClient client)

@@ -18,7 +18,8 @@ namespace kinGUI
 
         public event EventHandler<CommandRecievedEventArgs> OnCommandRecieved;
 
-        private readonly string ip = "192.168.5.180";
+        //private readonly string ip = "192.168.5.180";
+        private readonly string ip = "127.0.0.1";
         private readonly int port = 8888;
 
         public static ClientConn Instance
