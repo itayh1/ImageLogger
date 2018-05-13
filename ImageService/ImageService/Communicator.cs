@@ -65,8 +65,7 @@ namespace ImageService
             // serialize command for settings
             var serializer = new JavaScriptSerializer();
             var serializedConfig = serializer.Serialize(this.data);
-            CommandRecievedEventArgs command = new CommandRecievedEventArgs((int)CommandEnum.GetConfigCommand,
-                new string[] { serializedConfig }, string.Empty);
+            CommandRecievedEventArgs command = new CommandRecievedEventArgs((int)CommandEnum.GetConfigCommand, new string[] { serializedConfig }, string.Empty);
 
             // send appconfig
             var serializedCmd = serializer.Serialize(command);
@@ -74,8 +73,7 @@ namespace ImageService
 
             // serialize command for logs
             var serializedLogs = serializer.Serialize(this.loggingService.Logs);
-            command = new CommandRecievedEventArgs((int)CommandEnum.GetListLogCommand,
-                new string[] { serializedLogs }, string.Empty);
+            command = new CommandRecievedEventArgs((int)CommandEnum.GetListLogCommand, new string[] { serializedLogs }, string.Empty);
 
             // send logs
             serializedCmd = serializer.Serialize(command);

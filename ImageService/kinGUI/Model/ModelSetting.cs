@@ -18,6 +18,7 @@ namespace kinGUI
         private string sourceName;
         private int thumbnailSize;
         private ObservableCollection<string> handlers;
+        private string selectedPath;
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ModelSetting()
@@ -26,7 +27,7 @@ namespace kinGUI
             this.client = ClientConn.Instance;
             this.client.OnCommandRecieved += this.OnCommandRecieved;
         }
-        public void NotifyPropertyChanged(string propName)
+        public void OnPropertyChanged(string propName)
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
@@ -68,27 +69,34 @@ namespace kinGUI
         {
             get { return this.outputDir; }
             set { this.outputDir = value;
-                NotifyPropertyChanged("OutputDir");  }
+                OnPropertyChanged("OutputDir");  }
         }
         public string SourceName {
             get { return this.sourceName; }
             set { this.sourceName = value;
-                NotifyPropertyChanged("SourceName"); }
+                OnPropertyChanged("SourceName"); }
         }
         public string LogName {
             get { return this.logName; }
             set { this.logName = value;
-                NotifyPropertyChanged("LogName"); }
+                OnPropertyChanged("LogName"); }
             }
         public int ThumbnailSize {
             get { return this.thumbnailSize; }
             set { this.thumbnailSize = value;
-                NotifyPropertyChanged("ThumbnailSize"); }
+                OnPropertyChanged("ThumbnailSize"); }
             }
         public ObservableCollection<String> Handlers {
             get { return this.handlers; }
             set { this.handlers = value;
-                NotifyPropertyChanged("Handlers");  }
+                OnPropertyChanged("Handlers");  }
             }
+        public string SelectedPath
+        {
+            get { return this.selectedPath; }
+            set { this.selectedPath = value;
+                OnPropertyChanged("SelectedPath");
+            }
+        }
     }
 }

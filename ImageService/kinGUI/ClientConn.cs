@@ -38,7 +38,7 @@ namespace kinGUI
             try
             {
                 IPEndPoint ep = new IPEndPoint(IPAddress.Parse(ip), port);
-                this.client = new TcpClient();
+                this.client = new TcpClient();  
                 this.client.Connect(ep);
                 this.ReadMesagge();
             }
@@ -65,11 +65,11 @@ namespace kinGUI
                     NetworkStream stream = this.client.GetStream();
                     StreamReader reader = new StreamReader(stream);
 
-                    while (client.Connected)
-                    {
-                        arg = reader.ReadLine();
-                        var serializer = new JavaScriptSerializer();
-                        CommandRecievedEventArgs e = serializer.Deserialize<CommandRecievedEventArgs>(arg);
+                while (client.Connected)
+                {
+                    arg = reader.ReadLine();
+                    var serializer = new JavaScriptSerializer();
+                    CommandRecievedEventArgs e = serializer.Deserialize<CommandRecievedEventArgs>(arg);
                         //if (e.CommandID == (int)CommandEnum.ExitCommand)
                         //{
                         //    // Client want to exit.

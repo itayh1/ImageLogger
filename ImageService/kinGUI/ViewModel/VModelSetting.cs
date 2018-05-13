@@ -12,16 +12,14 @@ namespace kinGUI
 {
     class VModelSetting : INotifyPropertyChanged
     {
-        ModelSetting model;
+        private ModelSetting model;
 
-        public ICommand RemoveCommand { get; private set; }
-        private string selectedItem;
+        public ICommand RemoveCommand { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void OnPropertyChanged(string name)
+        protected void NotifyPropertyChanged(string name)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(name));
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
         public VModelSetting()
@@ -30,66 +28,60 @@ namespace kinGUI
             this.model = new ModelSetting();
             this.model.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
             {
-                this.OnPropertyChanged(e.PropertyName);
+                this.NotifyPropertyChanged("VM_" + e.PropertyName);
             };
-            this.RemoveCommand = new DelegateCommand<object>(this.Submit, this.CanSubmit);
-            this.PropertyChanged += RemovePropertyChanged;
 
+            this.RemoveCommand = new DelegateCommand<object>(this.Submit, this.CanSubmit);
         }
-        public string OutputDir
+
+        public string VM_OutputDir
         {
             get { return this.model.OutputDir; }
             set { this.model.OutputDir = value; }
         }
 
-        public string SourceName
+        public string VM_SourceName
         {
             get { return this.model.SourceName; }
             set { this.model.SourceName = value; }
         }
 
-        public string LogName
+        public string VM_LogName
         {
             get { return this.model.LogName; }
             set { this.model.LogName = value; }
         }
 
-        public int ThumbnailSize
+        public int VM_ThumbnailSize
         {
             get { return this.model.ThumbnailSize; }
             set { this.model.ThumbnailSize = value; }
         }
 
-        public ObservableCollection<String> Handlers
+        public ObservableCollection<String> VM_Handlers
         {
             get { return this.model.Handlers; }
         }
 
-        public string SelectedItem
+        public string VM_SelectedPath
         {
-            get { return this.selectedItem; }
-            set { this.selectedItem = value;
-                OnPropertyChanged("SelectedItem");
+            get { return this.model.SelectedPath; }
+            set { this.model.SelectedPath = value;
+                var command = this.RemoveCommand as DelegateCommand<object>;
+                command.RaiseCanExecuteChanged();
             }
-            //add property changed
-        }
-
-        private void RemovePropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            var command = this.RemoveCommand as DelegateCommand<object>;
-            command.RaiseCanExecuteChanged();
         }
 
         public void Submit(object o)
         {
             Console.WriteLine("Submit");
-            this.model.Removehandler(this.SelectedItem);
+            this.model.Removehandler(this.VM_SelectedPath);
         }
 
         public bool CanSubmit(object o)
         {
             Console.WriteLine("CanSubmit");
-            if (string.IsNullOrEmpty(this.SelectedItem))
+            if (string.IsNullOrEmpty(this.VM_SelectedPath))
                 return false;
             return true;
         }
