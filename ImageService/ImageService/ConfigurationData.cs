@@ -8,10 +8,10 @@ namespace ImageService
 {
     public class ConfigurationData
     {
-        public string sourceName;
-        public string outputDir;
-        public string logName;
-        public int thumbnailSize;
-        public string[] handlers;
+        public String SourceName { get; set; }
+        public String OutputDir { get; set; }
+        public String LogName { get; set; }
+        public int ThumbnailSize { get; set; }
+        public List<String> Handlers { get; set; }
     }
 }

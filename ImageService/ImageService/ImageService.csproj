@@ -63,9 +63,9 @@
     <Compile Include="Controller\ImageController.cs" />
     <Compile Include="Logger\ILoggingService.cs" />
     <Compile Include="Logger\LoggingModal\MessageRecievedEventArgs.cs" />
-    <Compile Include="Logger\LoggingModal\MessageTypeEnum.cs" />
     <Compile Include="Logger\LoggingService.cs" />
     <Compile Include="Logger\LogObject.cs" />
+    <Compile Include="MessageTypeEnum.cs" />
     <Compile Include="Modal\Event\CommandRecievedEventArgs.cs" />
     <Compile Include="Modal\Event\DirectoryCloseEventArgs.cs" />
     <Compile Include="Modal\IImageServiceModal.cs" />

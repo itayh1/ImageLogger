@@ -25,7 +25,7 @@ namespace ImageService
          */
         public void Log(string message, MessageTypeEnum type)
         {
-            LogObject newLog = new LogObject() { Type = type.ToString(), Message = message };
+            LogObject newLog = new LogObject(type.ToString(), message);
             Logs.Add(newLog);
             MessageRecieved?.Invoke(this, new MessageRecievedEventArgs(type, message));
         }

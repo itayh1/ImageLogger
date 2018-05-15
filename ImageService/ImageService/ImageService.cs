@@ -57,34 +57,35 @@ namespace ImageService
             // updates data from configurations manager
             string targetPath = ConfigurationManager.AppSettings["OutputDir"];  // destenation dir
             targetPath = targetPath.Replace(";", "");
-            configData.outputDir = targetPath;
-            configData.sourceName = ConfigurationManager.AppSettings["SourceName"];   //  "MySource";
-            configData.logName = ConfigurationManager.AppSettings["LogName"];    //  "MyNewLog";
-            configData.thumbnailSize = int.Parse(ConfigurationManager.AppSettings["ThumbnailSize"]);
-            configData.handlers = ConfigurationManager.AppSettings["Handler"].Split(';');
-            if (configData.handlers[configData.handlers.Length-1].Trim(' ') == string.Empty)
+            configData.OutputDir = targetPath;
+            configData.SourceName = ConfigurationManager.AppSettings["SourceName"];   //  "MySource";
+            configData.LogName = ConfigurationManager.AppSettings["LogName"];    //  "MyNewLog";
+            configData.ThumbnailSize = int.Parse(ConfigurationManager.AppSettings["ThumbnailSize"]);
+            string[] handlers = ConfigurationManager.AppSettings["Handler"].Split(';');
+            if (handlers[handlers.Length-1].Trim(' ') == string.Empty)
             {
-                configData.handlers = configData.handlers.Take<string>(configData.handlers.Length - 1).ToArray<string>();
+                handlers = handlers.Take<string>(handlers.Length - 1).ToArray<string>();
             }
-            
+            configData.Handlers = new List<string>(handlers);
             // create new eventLog by src
             eventLog1 = new EventLog();
-            if (!EventLog.SourceExists(configData.sourceName))
+            if (!EventLog.SourceExists(configData.SourceName))
             {
-                EventLog.CreateEventSource(configData.sourceName, configData.logName);
+                EventLog.CreateEventSource(configData.SourceName, configData.LogName);
             }
 
-            eventLog1.Source = configData.sourceName;
-            eventLog1.Log = configData.logName;
+            eventLog1.Source = configData.SourceName;
+            eventLog1.Log = configData.LogName;
 
             // construct all members
-            this.modal = new Modal.ImageServiceModal(targetPath, configData.thumbnailSize);
+            this.modal = new Modal.ImageServiceModal(targetPath, configData.ThumbnailSize);
             this.controller = new Controller.ImageController(this.modal);
             this.logging = new LoggingService();
             this.logging.MessageRecieved += updateLog;
-            this.m_imageServer = new Server.ImageServer(this.controller, this.logging, configData.handlers);
             Communicator communicator = new Communicator(configData, this.logging);
             communicator.Start();
+            this.m_imageServer = new Server.ImageServer(this.controller, this.logging, communicator);
+            
         }
 
         /*

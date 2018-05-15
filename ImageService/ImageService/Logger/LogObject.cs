@@ -8,6 +8,13 @@ namespace ImageService
 {
     public class LogObject
     {
+
+        public LogObject(string type, string msg)
+        {
+            this.Type = type;
+            this.Message = msg;
+        }
+
         public string Type { get; set; }
         public string Message { get; set; }
     }

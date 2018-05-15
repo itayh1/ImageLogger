@@ -15,7 +15,6 @@ namespace ImageService.Modal
     {        
         private string outputFolder { get; set; }
         private int thumbSize { get; set; }
-      
 
         /*
          * Construct ImageServiceMidal by destenation path and size of thumbnail
@@ -25,13 +24,6 @@ namespace ImageService.Modal
             this.outputFolder = target;
             this.thumbSize = thumbnail;
         }
-
-
-        public void OnCommandRecieved(object sender, CommandRecievedEventArgs e)
-        {
-            
-        }
-
 
         /*
          * The functions adding file by getting its src and its dst from constructor's class.
@@ -55,7 +47,6 @@ namespace ImageService.Modal
                     mainFolder.Attributes |= FileAttributes.Hidden;
                 }
                 
-
                 DateTime dateTime = File.GetCreationTime(src);
                 year = dateTime.Year.ToString();
                 month = dateTime.Month.ToString();
@@ -105,7 +96,6 @@ namespace ImageService.Modal
             return message;
         }
 
-
         /*
         * The function adds a thumbnail file to specific diretory relying on src and dst pathes
         */
@@ -130,7 +120,7 @@ namespace ImageService.Modal
                 message += AddToTumbnailFolder(source, dstPath, "cpy_" + fileName, dt);
             }
             return message;
-        }
-    }
+        }}
+
 
 }

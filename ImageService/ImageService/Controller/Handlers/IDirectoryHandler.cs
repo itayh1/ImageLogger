@@ -9,9 +9,11 @@ namespace ImageService.Controller.Handlers
 {
     public interface IDirectoryHandler
     {
-        event EventHandler<DirectoryCloseEventArgs> DirectoryClose;              // The Event That Notifies that the Directory is being closed
+        event EventHandler<CommandRecievedEventArgs> CommandRecieved;
+
+        String DPath { get; set; }
+
         void StartHandleDirectory(string dirPath);             // The Function Recieves the directory to Handle
-        void OnCommandRecieved(object sender, CommandRecievedEventArgs e);     // The Event that will be activated upon new Command
-        void OnClosed(object sender, DirectoryCloseEventArgs e);
+        void OnClose();
     }
 }
