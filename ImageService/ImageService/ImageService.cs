@@ -8,6 +8,7 @@ using System.ServiceProcess;
 using System.Runtime.InteropServices;
 using System.Configuration;
 using System.Text;
+using ImageService.LoggingModal;
 
 namespace ImageService
 {    
@@ -91,7 +92,7 @@ namespace ImageService
         /*
          * The function updates logger by a massage
          */
-        private void updateLog(object sender, Logging.Modal.MessageRecievedEventArgs e)
+        private void updateLog(object sender, LoggingModal.MessageRecievedEventArgs e)
         {
             this.eventLog1.WriteEntry(e.Message.ToString());
         }

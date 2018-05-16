@@ -1,6 +1,6 @@
 ﻿using ImageService.Controller;
 using ImageService.Controller.Handlers;
-using ImageService.Logging;
+using ImageService.LoggingModal;
 using ImageService.Modal;
 using System;
 using System.Configuration;
@@ -100,6 +100,7 @@ namespace ImageService.Server
             {
                 foreach (IDirectoryHandler handler in handlers)
                 {
+                    // finds handler from list and remove it
                     if (handler.DPath.CompareTo(path) == 0)
                     {
                         handler.OnClose();
@@ -109,12 +110,16 @@ namespace ImageService.Server
                         break;                      
                     }
                 }
+
+                // update all clients of which handler closed
+                communicator.SendCommandBroadCast(new CommandRecievedEventArgs((int)CommandEnum.CloseCommand, 
+                    new string[] { path }, String.Empty));
+
+                // log creation and update all clients
                 message += "handler: " + path + " was closed";
                 string type = MessageTypeEnum.INFO.ToString();
                 BuildLogAndSendCommand(message, type);
                 this.m_logging.Log(message, MessageTypeEnum.INFO);
-                communicator.SendCommandBroadCast(new CommandRecievedEventArgs((int)CommandEnum.CloseCommand, 
-                    new string[] { path }, String.Empty));   
             }
             catch (Exception ex)
             {
@@ -122,6 +127,7 @@ namespace ImageService.Server
                     path, ex.Message.ToString()), MessageTypeEnum.FAIL);
             }
         }
+
 
         private void BuildLogAndSendCommand(string message, string type)
         {

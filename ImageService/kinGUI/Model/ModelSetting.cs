@@ -42,15 +42,32 @@ namespace kinGUI
             this.sourceName = cd.sourceName;
             this.thumbnailSize = cd.thumbnailSize;
             this.handlers = new ObservableCollection<string>(cd.handlers);
+            Object thisLock = new Object();
+            //BindingOperations.EnableCollectionSynchronization(Handlers, thisLock);
         }
 
         public void Removehandler(string handler)
         {
-            CommandRecievedEventArgs command = new CommandRecievedEventArgs(
-                (int)CommandEnum.CloseCommand, new string[] { handler }, string.Empty);
-            var serializer = new JavaScriptSerializer();
-            var serializedData = serializer.Serialize(command);
-            this.client.sendMessage(serializedData);
+            try
+            {
+                // remove from handlers
+                if (this.handlers.Count > 0 && this.handlers.Contains(handler) && handler != null)
+                {
+                    this.handlers.Remove(handler);
+                }
+
+                // update server handler was removed
+                CommandRecievedEventArgs command = new CommandRecievedEventArgs(
+                    (int)CommandEnum.CloseCommand, new string[] { handler }, string.Empty);
+                var serializer = new JavaScriptSerializer();
+                var serializedData = serializer.Serialize(command);
+                this.client.sendMessage(serializedData);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message + ", cannot remove this handler");
+            }
+
         }
 
         public void OnCommandRecieved(object sender, CommandRecievedEventArgs e)
@@ -61,7 +78,7 @@ namespace kinGUI
             }
             else if (e.CommandID == (int)CommandEnum.CloseCommand)
             {
-                this.handlers.Remove(e.Args[0]);
+                this.Removehandler(e.Args[0]);
             }
         }
 

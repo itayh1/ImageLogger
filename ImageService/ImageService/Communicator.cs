@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.Net;
 using System.IO;
 using System.Web.Script.Serialization;
+using ImageService.LoggingModal;
 
 namespace ImageService
 {

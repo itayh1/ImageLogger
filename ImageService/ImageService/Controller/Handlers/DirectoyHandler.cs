@@ -5,8 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ImageService.Logging;
-using ImageService.Logging.Modal;
+using ImageService.LoggingModal;
 using System.Text.RegularExpressions;
 
 namespace ImageService.Controller.Handlers

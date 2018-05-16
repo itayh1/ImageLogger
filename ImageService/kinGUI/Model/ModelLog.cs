@@ -36,7 +36,8 @@ namespace kinGUI
             }
             else if (e.CommandID == (int)CommandEnum.LogCommand)
             {
-                this.logs.Add(new LogObject() { Type = e.Args[0], Message = e.Args[1] });
+                LogObject newLog = new LogObject() { Type = e.Args[0], Message = e.Args[1] };
+                this.logs.Add(newLog);
             }
         }
 
