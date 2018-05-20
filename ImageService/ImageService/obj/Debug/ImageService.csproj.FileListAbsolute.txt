@@ -36,5 +36,4 @@ E:\Itay\Source\Repos\ImageLogger\ImageService\ImageService\obj\Debug\ImageServic
 E:\Itay\Source\Repos\ImageLogger\ImageService\ImageService\obj\Debug\ImageService.csproj.CoreCompileInputs.cache
 E:\Itay\Source\Repos\ImageLogger\ImageService\ImageService\obj\Debug\ImageService.exe
 E:\Itay\Source\Repos\ImageLogger\ImageService\ImageService\obj\Debug\ImageService.pdb
-C:\Users\Itay\Source\Repos\ImageLogger\ImageService\ImageService\obj\Debug\ImageService.csprojResolveAssemblyReference.cache
 C:\Users\Omer Zucker\Source\Repos\ImageLogger\ImageService\ImageService\obj\Debug\ImageService.csprojResolveAssemblyReference.cache

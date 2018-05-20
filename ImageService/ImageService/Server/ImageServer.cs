@@ -31,6 +31,7 @@ namespace ImageService.Server
             this.m_logging = ils;
             this.handlers = new List<IDirectoryHandler>();
             this.communicator = com;
+            this.communicator.OnCommandRecieved += this.OnCommandRecieved;
             this.setHandlers(com.Configurations.Handlers.ToArray<string>());
         }
 
@@ -103,6 +104,13 @@ namespace ImageService.Server
                     // finds handler from list and remove it
                     if (handler.DPath.CompareTo(path) == 0)
                     {
+                        // log creation and update all clients
+                        message += "handler: " + path + " was closed";
+                        string type = MessageTypeEnum.INFO.ToString();
+                        BuildLogAndSendCommand(message, type);
+                        this.m_logging.Log(message, MessageTypeEnum.INFO);
+
+                        // remove handler
                         handler.OnClose();
                         this.handlers.Remove(handler);
                         this.communicator.Configurations.Handlers.Remove(path);
@@ -110,16 +118,9 @@ namespace ImageService.Server
                         break;                      
                     }
                 }
-
                 // update all clients of which handler closed
                 communicator.SendCommandBroadCast(new CommandRecievedEventArgs((int)CommandEnum.CloseCommand, 
                     new string[] { path }, String.Empty));
-
-                // log creation and update all clients
-                message += "handler: " + path + " was closed";
-                string type = MessageTypeEnum.INFO.ToString();
-                BuildLogAndSendCommand(message, type);
-                this.m_logging.Log(message, MessageTypeEnum.INFO);
             }
             catch (Exception ex)
             {

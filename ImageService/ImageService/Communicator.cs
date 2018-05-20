@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Net.Sockets;
 using System.Net;
@@ -13,6 +14,8 @@ namespace ImageService
 {
     public class Communicator
     {
+        private static Mutex usingClients = new Mutex();
+
         private readonly int server_port = 8888;
         private TcpListener listener;
         private List<TcpClient> clients;
@@ -36,23 +39,27 @@ namespace ImageService
             this.listener.Start();
             Console.WriteLine("Waiting for connections...");
 
-            while (true)
+            Task task = new Task(() =>
             {
-                try
+                while (true)
                 {
-                    TcpClient client = this.listener.AcceptTcpClient();
-                    this.clients.Add(client);
-                    Console.WriteLine("New client connection");
-                    this.loggingService.Log(string.Format("Client with socket {0} connected", client.ToString()), MessageTypeEnum.INFO);
-                    HandleClient(client);
+                    try
+                    {
+                        TcpClient client = this.listener.AcceptTcpClient();
+                        this.clients.Add(client);
+                        Console.WriteLine("New client connection");
+                        this.loggingService.Log(string.Format("Client with socket {0} connected", client.ToString()), MessageTypeEnum.INFO);
+                        HandleClient(client);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.Write(e.Message);
+                        break;
+                    }
                 }
-                catch (Exception e)
-                {
-                    Console.Write(e.Message);
-                    break;
-                }
-            }
-            Console.WriteLine("Server stopped");
+                Console.WriteLine("Server stopped");
+            });
+            task.Start();
         }
 
         public void HandleClient(TcpClient client)
@@ -71,6 +78,7 @@ namespace ImageService
                 {
                     try
                     {
+
                         msg = reader.ReadLine();
                         Console.WriteLine("msg: {0}", msg);
                         CommandRecievedEventArgs cmd = new JavaScriptSerializer().Deserialize<CommandRecievedEventArgs>(msg);
@@ -134,8 +142,11 @@ namespace ImageService
             var serializer = new JavaScriptSerializer();  
             var serializedCmd = serializer.Serialize(cmd);
 
+            Communicator.usingClients.WaitOne();
+
             foreach (TcpClient client in clients)
             {
+       
                 NetworkStream stream = client.GetStream();
                 StreamWriter writer = new StreamWriter(stream)
                 {
@@ -143,6 +154,7 @@ namespace ImageService
                 };
                 this.SendMessage(serializedCmd, client);
             }
+            Communicator.usingClients.ReleaseMutex();
         }
 
         public void Close()
