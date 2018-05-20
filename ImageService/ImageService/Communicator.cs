@@ -58,41 +58,44 @@ namespace ImageService
         public void HandleClient(TcpClient client)
         {
 
-         Task task = new Task(() => {          
-                     
-            bool running = true;
-            NetworkStream stream = client.GetStream();
-            StreamReader reader = new StreamReader(stream);
-            string msg = string.Empty;
-            SetConfigsAndLogs(client);
-
-            while (running)
+            Task task = new Task(() =>
             {
-                try
-                {
-                    msg = reader.ReadLine();
-                    Console.WriteLine("msg: {0}", msg);
-                    CommandRecievedEventArgs cmd = new JavaScriptSerializer().Deserialize<CommandRecievedEventArgs>(msg);
-                    Console.WriteLine("command is: {0}", cmd);
-                    // client exit
-                    if (cmd.CommandID == (int)CommandEnum.ExitCommand)
-                    {   
-                        client.Close();
-                        clients.Remove(client);
-                        break;
-                    }
-                    OnCommandRecieved?.Invoke(this, cmd);
-                }
-                catch (Exception ex)
-                {
-                    running = false;
-                    Console.WriteLine(ex.Message);
-                }
-            }
-            client.Close();
 
-              });
-              task.Start();
+                bool running = true;
+                NetworkStream stream = client.GetStream();
+                StreamReader reader = new StreamReader(stream);
+                string msg = string.Empty;
+                SetConfigsAndLogs(client);
+
+                while (running)
+                {
+                    try
+                    {
+                        msg = reader.ReadLine();
+                        Console.WriteLine("msg: {0}", msg);
+                        CommandRecievedEventArgs cmd = new JavaScriptSerializer().Deserialize<CommandRecievedEventArgs>(msg);
+                        Console.WriteLine("command is: {0}", cmd);
+                        // client exit
+                        if (cmd.CommandID == (int)CommandEnum.ExitCommand)
+                        {
+                            client.Close();
+                            clients.Remove(client);
+                            Console.WriteLine("Client removed");
+                            break;
+                        }
+                        OnCommandRecieved?.Invoke(this, cmd);
+                    }
+                    catch (Exception ex)
+                    {
+                        running = false;
+                        Console.WriteLine(ex.Message);
+                    }
+                }
+                Console.WriteLine("closing client");
+                client.Close();
+
+            });
+            task.Start();
         }
 
         public void SendMessage(string msg, TcpClient client)

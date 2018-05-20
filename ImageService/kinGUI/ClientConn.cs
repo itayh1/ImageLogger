@@ -50,8 +50,12 @@ namespace kinGUI
 
         public void sendMessage(string msg)
         {
+            Console.WriteLine("Sending message");
             NetworkStream stream = client.GetStream();
-            StreamWriter writer = new StreamWriter(stream);
+            StreamWriter writer = new StreamWriter(stream)
+            {
+                AutoFlush = true
+            };
             writer.WriteLine(msg);
         }
 
@@ -65,11 +69,11 @@ namespace kinGUI
                     NetworkStream stream = this.client.GetStream();
                     StreamReader reader = new StreamReader(stream);
 
-                while (client.Connected)
-                {
-                    arg = reader.ReadLine();
-                    var serializer = new JavaScriptSerializer();
-                    CommandRecievedEventArgs e = serializer.Deserialize<CommandRecievedEventArgs>(arg);
+                    while (client.Connected)
+                    {
+                        arg = reader.ReadLine();
+                        var serializer = new JavaScriptSerializer();
+                        CommandRecievedEventArgs e = serializer.Deserialize<CommandRecievedEventArgs>(arg);
                         //if (e.CommandID == (int)CommandEnum.ExitCommand)
                         //{
                         //    // Client want to exit.
