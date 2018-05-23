@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
-using System.Web.Script.Serialization;
+using Newtonsoft.Json;
 
 namespace kinGUI
 {
@@ -29,9 +29,8 @@ namespace kinGUI
         public void OnCommandRecieved(object sender, CommandRecievedEventArgs e)
         {
             if (e.CommandID == (int)CommandEnum.GetListLogCommand)
-            {
-                var serializer = new JavaScriptSerializer();
-                List<LogObject> temp = serializer.Deserialize<List<LogObject>>(e.Args[0]);
+            {;
+                List<LogObject> temp = JsonConvert.DeserializeObject<List<LogObject>>(e.Args[0]);
                 this.logs.AddRange(temp);
             }
             else if (e.CommandID == (int)CommandEnum.LogCommand)
@@ -44,7 +43,7 @@ namespace kinGUI
         public List<LogObject> Logs
         {
             get { return this.logs; }
-            set { this.logs = value; }
+            //set { this.logs = value; }
         }
     }
 }

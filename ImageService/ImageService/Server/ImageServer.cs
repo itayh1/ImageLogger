@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Script.Serialization;
+using Newtonsoft.Json;
 
 namespace ImageService.Server
 {
@@ -133,8 +133,7 @@ namespace ImageService.Server
         private void BuildLogAndSendCommand(string message, string type)
         {
             LogObject newLog = new LogObject(type, message);
-            var serializer = new JavaScriptSerializer();
-            var serializedLog = serializer.Serialize(newLog);
+            var serializedLog = JsonConvert.SerializeObject(newLog);
             CommandRecievedEventArgs cmd = new CommandRecievedEventArgs((int)CommandEnum.LogCommand, new string[] { serializedLog }, String.Empty);
             this.communicator.SendCommandBroadCast(cmd);
         }

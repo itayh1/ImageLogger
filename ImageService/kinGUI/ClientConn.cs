@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 using System.IO;
-using System.Web.Script.Serialization;
+using Newtonsoft.Json;
 
 namespace kinGUI
 {
@@ -72,8 +72,7 @@ namespace kinGUI
                     while (client.Connected)
                     {
                         arg = reader.ReadLine();
-                        var serializer = new JavaScriptSerializer();
-                        CommandRecievedEventArgs e = serializer.Deserialize<CommandRecievedEventArgs>(arg);
+                        CommandRecievedEventArgs e = JsonConvert.DeserializeObject<CommandRecievedEventArgs>(arg);
                         //if (e.CommandID == (int)CommandEnum.ExitCommand)
                         //{
                         //    // Client want to exit.

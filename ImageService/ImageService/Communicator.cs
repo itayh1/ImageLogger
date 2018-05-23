@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 using System.Net.Sockets;
 using System.Net;
 using System.IO;
-using System.Web.Script.Serialization;
 using ImageService.LoggingModal;
+using Newtonsoft.Json;
 
 namespace ImageService
 {
@@ -81,7 +81,7 @@ namespace ImageService
 
                         msg = reader.ReadLine();
                         Console.WriteLine("msg: {0}", msg);
-                        CommandRecievedEventArgs cmd = new JavaScriptSerializer().Deserialize<CommandRecievedEventArgs>(msg);
+                        CommandRecievedEventArgs cmd = JsonConvert.DeserializeObject<CommandRecievedEventArgs>(msg);
                         Console.WriteLine("command is: {0}", cmd);
                         // client exit
                         if (cmd.CommandID == (int)CommandEnum.ExitCommand)
@@ -119,28 +119,27 @@ namespace ImageService
         public void SetConfigsAndLogs(TcpClient client)
         {
             // serialize command for settings
-            var serializer = new JavaScriptSerializer();
-            var serializedConfig = serializer.Serialize(Configurations);
+            var serializedConfig = JsonConvert.SerializeObject(Configurations);
             CommandRecievedEventArgs command = new CommandRecievedEventArgs((int)CommandEnum.GetConfigCommand, new string[] { serializedConfig }, string.Empty);
 
             // send appconfig
-            var serializedCmd = serializer.Serialize(command);
+            var serializedCmd = JsonConvert.SerializeObject(command);
             this.SendMessage(serializedCmd, client);
 
             // serialize command for logs
-            var serializedLogs = serializer.Serialize(this.loggingService.Logs);
+            var serializedLogs = JsonConvert.SerializeObject(this.loggingService.Logs);
             command = new CommandRecievedEventArgs((int)CommandEnum.GetListLogCommand, new string[] { serializedLogs }, string.Empty);
 
             // send logs
-            serializedCmd = serializer.Serialize(command);
+            serializedCmd = JsonConvert.SerializeObject(command);
             this.SendMessage(serializedCmd, client);
         }
 
         public void SendCommandBroadCast(CommandRecievedEventArgs cmd)
         {
 
-            var serializer = new JavaScriptSerializer();  
-            var serializedCmd = serializer.Serialize(cmd);
+            //var serializer = new JavaScriptSerializer();
+            var serializedCmd = JsonConvert.SerializeObject(cmd);//serializer.Serialize(cmd);
 
             Communicator.usingClients.WaitOne();
 

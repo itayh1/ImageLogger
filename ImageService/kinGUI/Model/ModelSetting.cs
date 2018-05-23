@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Web.Script.Serialization;
+using Newtonsoft.Json;
 using Microsoft.Practices.Prism.Commands;
 
 namespace kinGUI
@@ -34,16 +34,12 @@ namespace kinGUI
 
         public void SetSettings(CommandRecievedEventArgs e)
         {
-            var serializer = new JavaScriptSerializer();
-            ConfigurationData cd = serializer.Deserialize
-                <ConfigurationData>(e.Args[0]);
+            ConfigurationData cd = JsonConvert.DeserializeObject<ConfigurationData>(e.Args[0]);
             this.outputDir = cd.outputDir;
             this.logName = cd.logName;
             this.sourceName = cd.sourceName;
             this.thumbnailSize = cd.thumbnailSize;
             this.handlers = new ObservableCollection<string>(cd.handlers);
-            Object thisLock = new Object();
-            //BindingOperations.EnableCollectionSynchronization(Handlers, thisLock);
         }
 
         public void Removehandler(string handler)
@@ -59,15 +55,13 @@ namespace kinGUI
                 // update server handler was removed
                 CommandRecievedEventArgs command = new CommandRecievedEventArgs(
                     (int)CommandEnum.CloseCommand, new string[] { handler }, string.Empty);
-                var serializer = new JavaScriptSerializer();
-                var serializedData = serializer.Serialize(command);
+                var serializedData = JsonConvert.SerializeObject(command);
                 this.client.sendMessage(serializedData);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message + ", cannot remove this handler");
             }
-
         }
 
         public void OnCommandRecieved(object sender, CommandRecievedEventArgs e)
