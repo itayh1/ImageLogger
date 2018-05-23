@@ -84,9 +84,8 @@ namespace ImageService
             this.logging = new LoggingService();
             this.logging.MessageRecieved += updateLog;
             Communicator communicator = new Communicator(configData, this.logging);
-            communicator.Start();
             this.m_imageServer = new Server.ImageServer(this.controller, this.logging, communicator);
-            
+            communicator.Start();
         }
 
         /*

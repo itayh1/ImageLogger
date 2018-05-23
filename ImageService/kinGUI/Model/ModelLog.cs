@@ -29,7 +29,7 @@ namespace kinGUI
         public void OnCommandRecieved(object sender, CommandRecievedEventArgs e)
         {
             if (e.CommandID == (int)CommandEnum.GetListLogCommand)
-            {;
+            {
                 List<LogObject> temp = JsonConvert.DeserializeObject<List<LogObject>>(e.Args[0]);
                 this.logs.AddRange(temp);
             }
@@ -37,13 +37,13 @@ namespace kinGUI
             {
                 LogObject newLog = new LogObject() { Type = e.Args[0], Message = e.Args[1] };
                 this.logs.Add(newLog);
+                NotifyPropertyChanged("LogsList");
             }
         }
 
         public List<LogObject> Logs
         {
             get { return this.logs; }
-            //set { this.logs = value; }
         }
     }
 }

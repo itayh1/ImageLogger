@@ -8,7 +8,7 @@ namespace ImageService
 {
     public enum CommandEnum : int
     {
-        NewFileCommand,
+        NewFileCommand, // =0
         GetConfigCommand,
         LogCommand,
         CloseCommand,

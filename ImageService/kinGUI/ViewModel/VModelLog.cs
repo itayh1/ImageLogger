@@ -26,9 +26,6 @@ namespace kinGUI
         public List<LogObject> LogsList
         {
             get { return this.model.Logs; }
-            set { this.model.Logs = value; }
         }
-
-
     }
 }

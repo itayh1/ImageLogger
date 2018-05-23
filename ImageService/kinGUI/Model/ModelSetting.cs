@@ -35,11 +35,11 @@ namespace kinGUI
         public void SetSettings(CommandRecievedEventArgs e)
         {
             ConfigurationData cd = JsonConvert.DeserializeObject<ConfigurationData>(e.Args[0]);
-            this.outputDir = cd.outputDir;
-            this.logName = cd.logName;
-            this.sourceName = cd.sourceName;
-            this.thumbnailSize = cd.thumbnailSize;
-            this.handlers = new ObservableCollection<string>(cd.handlers);
+            this.OutputDir = cd.outputDir;
+            this.LogName = cd.logName;
+            this.SourceName = cd.sourceName;
+            this.ThumbnailSize = cd.thumbnailSize;
+            this.Handlers = new ObservableCollection<string>(cd.handlers);
         }
 
         public void Removehandler(string handler)

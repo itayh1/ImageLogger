@@ -87,8 +87,6 @@ namespace ImageService.Server
                 }
                 this.BuildLogAndSendCommand(msg, typeEnum.ToString());
             }
-            
-
         }
 
         /*
