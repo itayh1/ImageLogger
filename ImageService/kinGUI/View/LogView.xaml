@@ -16,7 +16,7 @@
                 <DataGrid Name="DataGrid" ItemsSource="{Binding LogsList}" IsReadOnly="True" CanUserAddRows="False"
                           CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False"
                           CanUserSortColumns="False" AutoGenerateColumns="False" IsHitTestVisible="False" Focusable="False" 
-                          ScrollViewer.CanContentScroll="True" VerticalScrollBarVisibility="Visible" RowHeight="55" ColumnWidth="120">
+                          ScrollViewer.CanContentScroll="True" Width="Auto" Height="300" VerticalScrollBarVisibility="Visible" RowHeight="55" ColumnWidth="120">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="Auto" IsReadOnly="True">
                             <DataGridTextColumn.ElementStyle>

@@ -30,6 +30,7 @@ namespace kinGUI
 
         public void OnCommandRecieved(object sender, CommandRecievedEventArgs e)
         {
+            Console.WriteLine(e.CommandID + e.Args[0]);
             if (e.CommandID == (int)CommandEnum.GetListLogCommand)
             {
                 App.Current.Dispatcher.Invoke(new Action(() =>
@@ -40,12 +41,17 @@ namespace kinGUI
             }
             else if (e.CommandID == (int)CommandEnum.LogCommand)
             {
+                //List<LogObject> list = new List<LogObject>(Logs);
+                //LogObject newLog = JsonConvert.DeserializeObject<LogObject>(e.Args[0]);
+                //Console.WriteLine(newLog.Message + " " + newLog.Type);
+                //list.Add(newLog);
+                //Logs = list;
                 App.Current.Dispatcher.Invoke(new Action(() =>
                 {
                     LogObject newLog = JsonConvert.DeserializeObject<LogObject>(e.Args[0]);
                     this.Logs.Add(newLog);
                 }));
-                
+
             }
         }
 

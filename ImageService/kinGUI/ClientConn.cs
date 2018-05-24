@@ -59,7 +59,7 @@ namespace kinGUI
             {
                 try
                 {
-                    Console.WriteLine("Sending message");
+                    Console.WriteLine("Sending message " + msg);
                     stream = client.GetStream();
                     BinaryWriter writer = new BinaryWriter(stream);
                     mtx.WaitOne();
@@ -87,6 +87,7 @@ namespace kinGUI
                     while (client.Connected)
                     {
                         arg = reader.ReadString();
+                        Console.WriteLine("recieved " + arg);
                         CommandRecievedEventArgs e = JsonConvert.DeserializeObject<CommandRecievedEventArgs>(arg);
                         //if (e.CommandID == (int)CommandEnum.ExitCommand)
                         //{

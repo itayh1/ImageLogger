@@ -64,6 +64,7 @@ namespace ImageService.Server
          */
         public void OnCommandRecieved(object sender, CommandRecievedEventArgs e)
         {
+            Console.WriteLine(e.Args[0]);
             bool res;
             // remove ommand handler
             if (e.CommandID == (int)CommandEnum.CloseCommand)
@@ -72,6 +73,7 @@ namespace ImageService.Server
 
             }
             // addFile command
+
             else
             { 
                 string msg = this.m_controller.ExecuteCommand(e.CommandID, e.Args, out res);

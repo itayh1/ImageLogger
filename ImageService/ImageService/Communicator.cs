@@ -110,12 +110,9 @@ namespace ImageService
                 NetworkStream stream = client.GetStream();
                 BinaryWriter writer = new BinaryWriter(stream);
                 mutex.WaitOne();
-            
                 writer.Write(msg);
                 writer.Flush();
-              
                 mutex.ReleaseMutex();
-
         }
 
 
