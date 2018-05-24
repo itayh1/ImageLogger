@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using Newtonsoft.Json;
+using System.Collections.ObjectModel;
 
 namespace kinGUI
 {
@@ -18,6 +19,7 @@ namespace kinGUI
         {
             this.client = ClientConn.Instance;
             this.client.OnCommandRecieved += this.OnCommandRecieved;
+            
             this.logs = new List<LogObject>();
         }
 
@@ -30,20 +32,29 @@ namespace kinGUI
         {
             if (e.CommandID == (int)CommandEnum.GetListLogCommand)
             {
-                List<LogObject> temp = JsonConvert.DeserializeObject<List<LogObject>>(e.Args[0]);
-                this.logs.AddRange(temp);
+                App.Current.Dispatcher.Invoke(new Action(() =>
+                {
+                    List<LogObject> temp = JsonConvert.DeserializeObject<List<LogObject>>(e.Args[0]);
+                    this.Logs.AddRange(temp);
+                }));
             }
             else if (e.CommandID == (int)CommandEnum.LogCommand)
             {
-                LogObject newLog = new LogObject() { Type = e.Args[0], Message = e.Args[1] };
-                this.logs.Add(newLog);
-                NotifyPropertyChanged("LogsList");
+                App.Current.Dispatcher.Invoke(new Action(() =>
+                {
+                    LogObject newLog = JsonConvert.DeserializeObject<LogObject>(e.Args[0]);
+                    this.Logs.Add(newLog);
+                }));
+                
             }
         }
 
         public List<LogObject> Logs
         {
             get { return this.logs; }
+            set { this.logs = value;
+                NotifyPropertyChanged("LogsList");
+            }
         }
     }
 }

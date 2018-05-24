@@ -40,3 +40,5 @@ C:\Users\Itay\Source\Repos\ImageLogger\ImageService\ImageService\obj\Debug\Image
 C:\Users\Itay\Source\Repos\ImageLogger\ImageService\ImageService\obj\Debug\ImageService.csproj.CopyComplete
 C:\Users\Itay\Source\Repos\ImageLogger\ImageService\ImageService\obj\Debug\ImageService.exe
 C:\Users\Itay\Source\Repos\ImageLogger\ImageService\ImageService\obj\Debug\ImageService.pdb
+C:\Users\Omer Zucker\Source\Repos\ImageLogger\ImageService\ImageService\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Omer Zucker\Source\Repos\ImageLogger\ImageService\ImageService\obj\Debug\ImageService.csproj.CopyComplete

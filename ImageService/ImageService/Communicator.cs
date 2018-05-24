@@ -48,7 +48,8 @@ namespace ImageService
                         TcpClient client = this.listener.AcceptTcpClient();
                         this.clients.Add(client);
                         Console.WriteLine("New client connection");
-                        this.loggingService.Log(string.Format("Client with socket {0} connected", client.ToString()), MessageTypeEnum.INFO);
+                        this.loggingService.Logs.Add(new LogObject(MessageTypeEnum.INFO.ToString(),
+                            string.Format("Client with socket {0} connected", client.ToString())));
                         HandleClient(client);
                     }
                     catch (Exception e)
@@ -65,8 +66,8 @@ namespace ImageService
         public void HandleClient(TcpClient client)
         {
 
-            Task task = new Task(() =>
-            {
+            //Task task = new Task(() =>
+            //{
 
                 bool running = true;
                 NetworkStream stream = client.GetStream();
@@ -100,24 +101,21 @@ namespace ImageService
                     }
                 }
                 Console.WriteLine("closing client");
-            });
-            task.Start();
+            //});
+            //task.Start();
         }
 
         public void SendMessage(string msg, TcpClient client)
         {
-            new Task(() =>
-            {
                 NetworkStream stream = client.GetStream();
                 BinaryWriter writer = new BinaryWriter(stream);
                 mutex.WaitOne();
-                //writer.Seek(0, SeekOrigin.Begin);
+            
                 writer.Write(msg);
                 writer.Flush();
-                
-                //writer.Close();
+              
                 mutex.ReleaseMutex();
-            }).Start();
+
         }
 
 

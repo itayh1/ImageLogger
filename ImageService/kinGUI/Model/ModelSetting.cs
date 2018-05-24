@@ -47,10 +47,10 @@ namespace kinGUI
             try
             {
                 // remove from handlers
-                if (this.handlers.Count > 0 && this.handlers.Contains(handler) && handler != null)
-                {
-                    this.handlers.Remove(handler);
-                }
+                //if (this.handlers.Count > 0 && this.handlers.Contains(handler) && handler != null)
+                //{
+                //    this.handlers.Remove(handler);
+                //}
 
                 // update server handler was removed
                 CommandRecievedEventArgs command = new CommandRecievedEventArgs(
@@ -72,7 +72,21 @@ namespace kinGUI
             }
             else if (e.CommandID == (int)CommandEnum.CloseCommand)
             {
-                this.Removehandler(e.Args[0]);
+                //this.Removehandler(e.Args[0]);
+                try
+                {
+                    string handler = e.Args[0];
+                    if (this.handlers.Contains(handler))
+                    {
+                        App.Current.Dispatcher.Invoke(new Action(() =>
+                        {
+                            this.handlers.Remove(handler);
+                        }));
+                    }
+                } catch(Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
             }
         }
 

@@ -59,7 +59,7 @@ namespace ImageService.Controller.Handlers
             string ext = Path.GetExtension(e.FullPath);
             if (this.extentions.Contains(ext)) {
                string[] parameters = { e.FullPath };
-               CommandRecieved(this, new CommandRecievedEventArgs((int)CommandID.addFile, parameters, ""));
+               //CommandRecieved(this, new CommandRecievedEventArgs((int)CommandID.addFile, parameters, ""));
             }                                              
          }
 
