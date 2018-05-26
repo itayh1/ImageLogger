@@ -80,7 +80,7 @@ namespace kinGUI
                     {
                         App.Current.Dispatcher.Invoke(new Action(() =>
                         {
-                            this.handlers.Remove(handler);
+                            this.Handlers.Remove(handler);
                         }));
                     }
                 } catch(Exception ex)

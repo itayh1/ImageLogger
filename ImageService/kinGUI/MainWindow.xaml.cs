@@ -27,10 +27,7 @@ namespace kinGUI
         public MainWindow()
         {
             InitializeComponent();
-            //this.client = new VClient("127.0.0.1", 5555);
-          //  this.viewModel = new VModelSetting();
-            //this.DataContext = this.viewModel;
-            //((Vie this.DataContex
+            this.DataContext = new VModelMainWin();
         }
 
         private void TextBlock_StylusOutOfRange(object sender, StylusEventArgs e)

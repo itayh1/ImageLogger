@@ -49,6 +49,7 @@ namespace kinGUI
             }
             catch (Exception e)
             {
+                this.connected = false;
                 Console.WriteLine(e.Message.ToString());
             }
         }

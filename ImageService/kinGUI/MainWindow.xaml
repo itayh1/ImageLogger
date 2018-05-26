@@ -6,9 +6,24 @@
         xmlns:local="clr-namespace:kinGUI"
         xmlns:controls="clr-namespace:kinGUI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
-        Background="Blue">
+        Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <Grid.Style>
+            <Style TargetType="Grid">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding VM_Connecetd}" 
+                                 Value="True">
+                        <Setter Property="Background"
+                                Value="White" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding VM_Connecetd}" 
+                                 Value="False">
+                        <Setter Property="Background"
+                                Value="Gray" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Style>
         <TabControl>
             <TabItem Header="Settings">
                 <controls:SettingView/>
