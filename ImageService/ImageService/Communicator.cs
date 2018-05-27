@@ -33,47 +33,34 @@ namespace ImageService
         }
 
         public ConfigurationData Configurations;
-       
+
         public async Task StartAsync()
         {
             this.listener.Start();
             Console.WriteLine("Waiting for connections...");
 
-            //Task task = new Task(() =>
-            //{
-                while (true)
+            while (true)
+            {
+                try
                 {
-                    try
-                    {
-                    //TcpClient client = this.listener.AcceptTcpClient();
-                    //this.clients.Add(client);
-                    //Console.WriteLine("New client connection");
-                    //this.loggingService.Logs.Add(new LogObject(MessageTypeEnum.INFO.ToString(),
-                    //    string.Format("Client with socket {0} connected", client.ToString())));
-                    //HandleClient(client);
-
-
                     var tcpClient = await this.listener.AcceptTcpClientAsync();
                     this.clients.Add(tcpClient);
+                    this.loggingService.Logs.Add(new LogObject(MessageTypeEnum.INFO.ToString(),
+                     string.Format("Client with socket {0} connected", tcpClient.ToString())));
                     Console.WriteLine("[Server] Client has connected");
                     var task = StartHandleConnectionAsync(tcpClient);
                     // if already faulted, re-throw any error on the calling context
                     if (task.IsFaulted)
                         task.Wait();
-
-
                 }
-                    catch (Exception e)
-                    {
-                        Console.Write(e.Message);
-                        break;
-                    }
+                catch (Exception e)
+                {
+                    Console.Write(e.Message);
+                    break;
                 }
-                Console.WriteLine("Server stopped");
-           // });
-           // task.Start();
+            }
+            Console.WriteLine("Server stopped");
         }
-
 
         object _lock = new Object(); // sync lock 
         List<Task> _connections = new List<Task>(); // pending connections
@@ -146,50 +133,7 @@ namespace ImageService
                 }
             });
         }
-
-
-        public void HandleClient(TcpClient client)
-        {
-
-            //Task task = new Task(() =>
-            //{
-
-                bool running = true;
-                NetworkStream stream = client.GetStream();
-                BinaryReader reader = new BinaryReader(stream);
-                string msg = string.Empty;
-                SetConfigsAndLogs(client);
-
-                while (running)
-                {
-                    try
-                    {
-                        msg = reader.ReadString();
-                        Console.WriteLine("msg: {0}", msg);
-                        CommandRecievedEventArgs cmd = JsonConvert.DeserializeObject<CommandRecievedEventArgs>(msg);
-                        Console.WriteLine("command is: {0}", cmd);
-                        // client exit
-                        if (cmd.CommandID == (int)CommandEnum.ExitCommand)
-                        {
-                            client.Close();
-                            clients.Remove(client);
-                            Console.WriteLine("Client removed");
-                            break;
-                        }
-                        OnCommandRecieved?.Invoke(this, cmd);
-                    }
-                    catch (Exception ex)
-                    {
-                        running = false;
-                        clients.Remove(client);
-                        Console.WriteLine(ex.Message);
-                    }
-                }
-                Console.WriteLine("closing client");
-            //});
-            //task.Start();
-        }
-
+                
         public void SendMessage(string msg, TcpClient client)
         {
                 NetworkStream stream = client.GetStream();
@@ -228,7 +172,6 @@ namespace ImageService
             {
                     this.SendMessage(serializedCmd, client);
             }
-
         }
 
         public void Close()

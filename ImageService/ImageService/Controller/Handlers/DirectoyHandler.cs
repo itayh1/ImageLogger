@@ -18,7 +18,7 @@ namespace ImageService.Controller.Handlers
         private IImageController m_controller;              // The Image Processing Controller
         private ILoggingService m_logging;
         private FileSystemWatcher m_dirWatcher;             // The Watcher of the Dir
-        private readonly string[] extentions = {".jpg", ".png", ".gif", ".bmp"};
+        private readonly string[] extentions = { ".jpg", ".png", ".gif", ".bmp" };
         #endregion
 
         public event EventHandler<CommandRecievedEventArgs> CommandRecieved;
@@ -28,19 +28,19 @@ namespace ImageService.Controller.Handlers
         /*
          * Construct Directory handler 
          */
-        public DirectoyHandler(IImageController ic, ILoggingService ls, string path) 
+        public DirectoyHandler(IImageController ic, ILoggingService ls, string path)
         {
             this.m_controller = ic;
             this.m_logging = ls;
             this.DPath = path;
             this.m_dirWatcher = new FileSystemWatcher(path);
-        
-        }                                                                 
+
+        }
 
         /*
          * The function getting  a directory path and start handeling the directory by watching its actions
          */
-        public void StartHandleDirectory(string dirPath) 
+        public void StartHandleDirectory(string dirPath)
         {
             this.m_logging.Log("initiate directory handler from:" + dirPath, MessageTypeEnum.INFO);
             this.m_dirWatcher.Created += new FileSystemEventHandler(this.OnChanged);
@@ -54,24 +54,20 @@ namespace ImageService.Controller.Handlers
          * The function updates the logger new file added and deals with file's extension
          */
         private void OnChanged(object sender, FileSystemEventArgs e)
-         {
+        {
             this.m_logging.Log("New file added " + e.FullPath, MessageTypeEnum.INFO);
             string ext = Path.GetExtension(e.FullPath);
-            if (this.extentions.Contains(ext)) {
-               string[] parameters = { e.FullPath };
-               //CommandRecieved(this, new CommandRecievedEventArgs((int)CommandID.addFile, parameters, ""));
-            }                                              
-         }
+            if (this.extentions.Contains(ext))
+            {
+                string[] parameters = { e.FullPath };
+                CommandRecieved(this, new CommandRecievedEventArgs((int)CommandID.addFile, parameters, ""));
+            }
+        }
 
         public void OnClose()
         {
             this.m_dirWatcher.EnableRaisingEvents = false;
             this.m_dirWatcher.Dispose();
         }
-
-
-
-
-
-}
+    }
 }

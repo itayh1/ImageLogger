@@ -10,27 +10,27 @@
         <local:StringToColorConverter x:Key="StringToColorConverter"/>
     </UserControl.Resources>
     <Grid>
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <StackPanel>
-                <TextBlock Padding="3" Text="Logs" TextAlignment="Center" FontWeight="Bold" Foreground="Blue" FontSize="20"></TextBlock>
-                <Border BorderBrush="AntiqueWhite" HorizontalAlignment="Stretch">
-                    <DataGrid Name="DataGrid" ItemsSource="{Binding LogsList}" IsReadOnly="True" CanUserAddRows="False"
+
+        <StackPanel>
+            <TextBlock Padding="3" Text="Logs" TextAlignment="Center" FontWeight="Bold" Foreground="Blue" FontSize="20"></TextBlock>
+            <Border BorderBrush="AntiqueWhite" HorizontalAlignment="Stretch">
+                <DataGrid Name="DataGrid" ItemsSource="{Binding LogsList}" IsReadOnly="True" CanUserAddRows="False"
                           CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False"
-                          CanUserSortColumns="False" AutoGenerateColumns="False" IsHitTestVisible="False" Focusable="False" 
-                          ScrollViewer.CanContentScroll="True" Width="Auto" Height="300" VerticalScrollBarVisibility="Visible" RowHeight="55" ColumnWidth="120">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="Auto" IsReadOnly="True">
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Background" Value="{Binding Type, Converter={StaticResource ResourceKey=StringToColorConverter}}" />
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                            </DataGridTextColumn>
-                            <DataGridTextColumn Header="Message" Binding="{Binding Message}" Width="*" IsReadOnly="True"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </Border>
-            </StackPanel>
-        </ScrollViewer>
+                          CanUserSortColumns="False" AutoGenerateColumns="False" Focusable="False" 
+                          ScrollViewer.CanContentScroll="True" Width="Auto" Height="300" VerticalScrollBarVisibility="Visible"
+                              RowHeight="55" ColumnWidth="120">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="Auto" IsReadOnly="True">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Background" Value="{Binding Type, Converter={StaticResource ResourceKey=StringToColorConverter}}" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Message" Binding="{Binding Message}" Width="*" IsReadOnly="True"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
+        </StackPanel>
     </Grid>
 </UserControl>

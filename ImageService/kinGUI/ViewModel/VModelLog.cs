@@ -24,9 +24,10 @@ namespace kinGUI
             this.model = new ModelLog();
         }
 
-        public List<LogObject> LogsList
+        public ObservableCollection<LogObject> LogsList
         {
-            get { return this.model.Logs; }
+            get { return this.model.LogsList; }
+            set { this.model.LogsList = value; }
         }
     }
 }

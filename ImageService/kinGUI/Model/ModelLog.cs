@@ -12,7 +12,7 @@ namespace kinGUI
     class ModelLog : INotifyPropertyChanged
     {
         private ClientConn client;
-        private List<LogObject> logs;
+        private ObservableCollection<LogObject> logs;
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ModelLog()
@@ -20,7 +20,7 @@ namespace kinGUI
             this.client = ClientConn.Instance;
             this.client.OnCommandRecieved += this.OnCommandRecieved;
             
-            this.logs = new List<LogObject>();
+            this.logs = new ObservableCollection<LogObject>();
         }
 
         public void NotifyPropertyChanged(string propName)
@@ -36,26 +36,24 @@ namespace kinGUI
                 App.Current.Dispatcher.Invoke(new Action(() =>
                 {
                     List<LogObject> temp = JsonConvert.DeserializeObject<List<LogObject>>(e.Args[0]);
-                    this.Logs.AddRange(temp);
+                    foreach (LogObject lo in temp)
+                    {
+                        this.LogsList.Add(lo);
+                    }                    
                 }));
             }
             else if (e.CommandID == (int)CommandEnum.LogCommand)
             {
-                //List<LogObject> list = new List<LogObject>(Logs);
-                //LogObject newLog = JsonConvert.DeserializeObject<LogObject>(e.Args[0]);
-                //Console.WriteLine(newLog.Message + " " + newLog.Type);
-                //list.Add(newLog);
-                //Logs = list;
                 App.Current.Dispatcher.Invoke(new Action(() =>
                 {
                     LogObject newLog = JsonConvert.DeserializeObject<LogObject>(e.Args[0]);
-                    this.Logs.Add(newLog);
+                    this.LogsList.Add(newLog);
                 }));
 
             }
         }
 
-        public List<LogObject> Logs
+        public ObservableCollection<LogObject> LogsList
         {
             get { return this.logs; }
             set { this.logs = value;

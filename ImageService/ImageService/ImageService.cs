@@ -9,6 +9,8 @@ using System.Runtime.InteropServices;
 using System.Configuration;
 using System.Text;
 using ImageService.LoggingModal;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ImageService
 {    
@@ -85,7 +87,10 @@ namespace ImageService
             this.logging.MessageRecieved += updateLog;
             Communicator communicator = new Communicator(configData, this.logging);
             this.m_imageServer = new Server.ImageServer(this.controller, this.logging, communicator);
-            communicator.StartAsync().Wait();
+            new Task(() =>
+            {
+                communicator.StartAsync().Wait();
+            }).Start();
         }
 
         /*
