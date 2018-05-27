@@ -75,6 +75,7 @@ namespace kinGUI
             task.Start();
         }
 
+        object o = new object();
         public void ReadMesagge()
         {
             new Task(() =>
@@ -87,26 +88,30 @@ namespace kinGUI
 
                     while (client.Connected)
                     {
-                        arg = reader.ReadString();
-                        Console.WriteLine("recieved " + arg);
-                        CommandRecievedEventArgs e = JsonConvert.DeserializeObject<CommandRecievedEventArgs>(arg);
-                        //if (e.CommandID == (int)CommandEnum.ExitCommand)
-                        //{
-                        //    // Client want to exit.
-                        //    break;
-                        //}
-                        OnCommandRecieved?.Invoke(this, e);
+                        lock (o)
+                        {
+                            arg = reader.ReadString();
+                            Console.WriteLine("recieved " + arg);
+                            CommandRecievedEventArgs e = JsonConvert.DeserializeObject<CommandRecievedEventArgs>(arg);
+                            //if (e.CommandID == (int)CommandEnum.ExitCommand)
+                            //{
+                            //    // Client want to exit.
+                            //    break;
+                            //}
+                            //Thread.Sleep(1000);
+                            OnCommandRecieved?.Invoke(this, e);
+                        }
                     }
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
                 }
-                finally
-                {
-                    client.Close();
+                //finally
+                //{
+                //    client.Close();
 
-                }
+                //}
                
             }).Start();
         }

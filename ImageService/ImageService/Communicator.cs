@@ -34,7 +34,7 @@ namespace ImageService
 
         public ConfigurationData Configurations;
        
-        public void Start()
+        public async Task StartAsync()
         {
             this.listener.Start();
             Console.WriteLine("Waiting for connections...");
@@ -45,13 +45,24 @@ namespace ImageService
                 {
                     try
                     {
-                        TcpClient client = this.listener.AcceptTcpClient();
-                        this.clients.Add(client);
-                        Console.WriteLine("New client connection");
-                        this.loggingService.Logs.Add(new LogObject(MessageTypeEnum.INFO.ToString(),
-                            string.Format("Client with socket {0} connected", client.ToString())));
-                        HandleClient(client);
-                    }
+                    //TcpClient client = this.listener.AcceptTcpClient();
+                    //this.clients.Add(client);
+                    //Console.WriteLine("New client connection");
+                    //this.loggingService.Logs.Add(new LogObject(MessageTypeEnum.INFO.ToString(),
+                    //    string.Format("Client with socket {0} connected", client.ToString())));
+                    //HandleClient(client);
+
+
+                    var tcpClient = await this.listener.AcceptTcpClientAsync();
+                    this.clients.Add(tcpClient);
+                    Console.WriteLine("[Server] Client has connected");
+                    var task = StartHandleConnectionAsync(tcpClient);
+                    // if already faulted, re-throw any error on the calling context
+                    if (task.IsFaulted)
+                        task.Wait();
+
+
+                }
                     catch (Exception e)
                     {
                         Console.Write(e.Message);
@@ -62,6 +73,80 @@ namespace ImageService
            // });
            // task.Start();
         }
+
+
+        object _lock = new Object(); // sync lock 
+        List<Task> _connections = new List<Task>(); // pending connections
+
+        private async Task StartHandleConnectionAsync(TcpClient tcpClient)
+        {
+            // start the new connection task
+            var connectionTask = HandleConnectionAsync(tcpClient);
+
+            // add it to the list of pending task 
+            lock (_lock)
+                _connections.Add(connectionTask);
+
+            // catch all errors of HandleConnectionAsync
+            try
+            {
+                await connectionTask;
+                // we may be on another thread after "await"
+            }
+            catch (Exception ex)
+            {
+                // log the error
+                Console.WriteLine(ex.ToString());
+            }
+            finally
+            {
+                // remove pending task
+                lock (_lock)
+                    _connections.Remove(connectionTask);
+            }
+        }
+
+        private Task HandleConnectionAsync(TcpClient client)
+        {
+            return Task.Run(async () =>
+            {
+                using (NetworkStream stream = client.GetStream())
+                {
+                    bool running = true;
+                    BinaryReader reader = new BinaryReader(stream);
+                    string msg = string.Empty;
+                    SetConfigsAndLogs(client);
+
+                    while (running)
+                    {
+                        try
+                        {
+                            msg = reader.ReadString();
+                            Console.WriteLine("msg: {0}", msg);
+                            CommandRecievedEventArgs cmd = JsonConvert.DeserializeObject<CommandRecievedEventArgs>(msg);
+                            Console.WriteLine("command is: {0}", cmd);
+                            // client exit
+                            if (cmd.CommandID == (int)CommandEnum.ExitCommand)
+                            {
+                                client.Close();
+                                clients.Remove(client);
+                                Console.WriteLine("Client removed");
+                                break;
+                            }
+                            OnCommandRecieved?.Invoke(this, cmd);
+                        }
+                        catch (Exception ex)
+                        {
+                            running = false;
+                            clients.Remove(client);
+                            Console.WriteLine(ex.Message);
+                        }
+                    }
+                    Console.WriteLine("closing client");
+                }
+            });
+        }
+
 
         public void HandleClient(TcpClient client)
         {

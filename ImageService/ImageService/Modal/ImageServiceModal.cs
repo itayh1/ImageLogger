@@ -42,10 +42,10 @@ namespace ImageService.Modal
                     throw new Exception("File missing!");
                 }
                 DirectoryInfo mainFolder = Directory.CreateDirectory(this.outputFolder);//new DirectoryInfo(this.outputFolder);
-                if ((mainFolder.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden)
-                {
-                    mainFolder.Attributes |= FileAttributes.Hidden;
-                }
+                //if ((mainFolder.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden)
+                //{
+                //    mainFolder.Attributes |= FileAttributes.Hidden;
+                //}
                 
                 DateTime dateTime = File.GetCreationTime(src);
                 year = dateTime.Year.ToString();

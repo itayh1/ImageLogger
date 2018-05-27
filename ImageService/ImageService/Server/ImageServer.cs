@@ -70,7 +70,6 @@ namespace ImageService.Server
             if (e.CommandID == (int)CommandEnum.CloseCommand)
             {
                 this.OnClosed(e.Args[0]);
-
             }
             // addFile command
 
@@ -115,7 +114,7 @@ namespace ImageService.Server
                         // log creation and update all clients
                         message += "handler: " + path + " was closed";
                         string type = MessageTypeEnum.INFO.ToString();
-                        BuildLogAndSendCommand(message, type);
+                        //BuildLogAndSendCommand(message, type);
                         this.m_logging.Log(message, MessageTypeEnum.INFO);
 
                         // remove handler
